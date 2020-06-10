@@ -38,8 +38,14 @@ io.on('connection', (socket) => {
         io.emit('chatmsg', dataobject);
 });
 
+let requests = 0
+
+let x = 0
+let y = 0
 
   socket.on('start-request', user=> {
+
+  
 
     updatedUsers.forEach(us=>{
 
@@ -52,11 +58,13 @@ io.on('connection', (socket) => {
     updatedUsers.push(user)
 
     if (updatedUsers.length ==2) {
+
+      x = Math.floor(Math.random()*500) 
+       y = Math.floor(Math.random()*380)
       
-      io.emit('start', updatedUsers) }
+      io.emit('start', updatedUsers, x, y) }
     
-    console.log(updatedUsers)
-    
+
 })
 })
 

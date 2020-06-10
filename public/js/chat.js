@@ -27,7 +27,7 @@ waitingMsgEl.style.display = 'none'
 let rounds = 0;
 
 
-function showVirus() {
+function showVirus(x, y) {
 
     let virusImage = document.createElement(`img`)
     virusImage.src = "assets/virus.png"
@@ -35,11 +35,11 @@ function showVirus() {
     boardEl.style.cssText = "position:relative";
     virusImage.style.cssText = "position:absolute";
   
-    // assign coordinates, don't forget "px"!
-    let coords = boardEl.getBoundingClientRect();
+    // assign coordinates
+    let coords = boardEl.getBoundingClientRect(); 
   
-    virusImage.style.left = coords.left + "50px";
-    virusImage.style.top = coords.top + "20px";
+    virusImage.style.left = coords.left + x + "px";
+    virusImage.style.top = coords.top + y +"px";
   
     boardEl.append(virusImage)
 
@@ -67,7 +67,7 @@ document.querySelector('#login-form').addEventListener('submit', e => {
 
 });
 
-socket.on('start', users=>{
+socket.on('start', (users, x, y) =>{
 
 
         gameEl.style.display = 'flex';
@@ -79,7 +79,9 @@ socket.on('start', users=>{
 
         let n = 0
 
-        showVirus()
+        console.log(x,y)
+
+        showVirus(x, y)
 
         setInterval(function() {
 

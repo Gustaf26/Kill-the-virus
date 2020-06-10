@@ -34,10 +34,8 @@ img {width:3rem;
     }
 
 #game {visibility:none;
-    display: flex;
-    flex-direction: column;
-    height: 75vh;
-    width: 50vw;
+    height: 600px;
+    min-width: 600px;
     border: 1px dotted grey;
     background-color: rgb(239, 243, 243);
     
