@@ -23,9 +23,11 @@ img {width:3rem;
 #users, #game, #timer {visibility:none;}
 
 #users {list-style-type: none;
-    background-color: darkgrey;
+    background-color: rgb(216, 215, 215);
     color: green;
-    visibility:none;
+    font-size: 1.3rem;
+    text-align: center;
+    padding-left: 0;
     }
 
 #game {visibility:none;

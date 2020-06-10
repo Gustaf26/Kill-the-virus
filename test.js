@@ -23,6 +23,8 @@ app.set('port', port);
 const server = http.createServer(app);
 const io = SocketIO(server);
 
+let updatedUsers = []
+
 io.on('connection', (socket) => {
     console.log("A client connected!");
 
@@ -36,19 +38,25 @@ io.on('connection', (socket) => {
         io.emit('chatmsg', dataobject);
 });
 
-  socket.on('typing', user => {
+
+  socket.on('start-request', user=> {
+
+    updatedUsers.forEach(us=>{
+
+      if (user==us) {updatedUsers.pop(us)}
+
+    })
+
+    if (user==updatedUsers[0]) {return}
+
+    updatedUsers.push(user)
+
+    if (updatedUsers.length ==2) {
+      
+      io.emit('start', updatedUsers) }
     
-      socket.broadcast.emit('typing', user);
-});
-
-  socket.on('login', user=> {
-
-      io.emit('login', user)
-  })
-
-  socket.on('logout', user=> {
-
-    io.emit('logout', user)
+    console.log(updatedUsers)
+    
 })
 })
 

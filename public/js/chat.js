@@ -20,7 +20,7 @@ const waitingMsgEl = document.querySelector("#waiting")
 
 waitingMsgEl.style.display = 'none'
 
-let userCounter = 0;
+let rounds = 0;
 
 let timeStamp = ""
 
@@ -32,45 +32,48 @@ document.querySelector('#login-form').addEventListener('submit', e => {
 
     waitingMsgEl.style.display = 'flex';
 
-    setInterval(function() {
+    socket.emit('start-request', nickEl.value);
+
+    
+
+});
+
+socket.on('start', users=>{
+
+        console.log(users)
+
         gameEl.style.display = 'flex';
-        waitingMsgEl.style.display = 'none';}, 5000);
+        waitingMsgEl.style.display = 'none';
+        usersEl.innerHTML = `${users[0]} AGAINST ${users[1]}`
 
-    
+        rounds +=1
 
-});
+        if (rounds==10) {
 
-
-socket.on('chatmsg', dataobject => {
-
-    feedbackEl.innerHTML = "";
-    
-    if (dataobject.emoji) {
-
-        document.querySelector('#messages').innerHTML += `<li class="list-group-item">${dataobject.nick}: ${dataobject.emoji}<a id="timestamp">${dataobject.time}</a></li>`;
-    }
-
-    else if (dataobject.message) {document.querySelector('#messages').innerHTML += `<li class="list-group-item">${dataobject.nick}: ${dataobject.message}<a id="timestamp">${dataobject.time}</a></li>`;}
-
-    else if (dataobject.pic) {
-
-        document.querySelector('#messages').innerHTML += `<li class="list-group-item">${dataobject.nick}: <img src="${dataobject.pic}"><a>${time}</a></li>`;
-    }
-
-
-});
-
-socket.on('typing', (user)=> {
-
-    feedbackEl.innerHTML = `<p><em>${user} is typing a message...</em></p>`
+            alert('End of the game')
+            
+        }
 
 })
+// socket.on('chatmsg', dataobject => {
 
-socket.on('login', (user)=> {
+//     feedbackEl.innerHTML = "";
+    
+//     if (dataobject.emoji) {
 
-    usersEl.innerHTML += `<li id="${user.nick}">${user.nick} is online</li>`
+//         document.querySelector('#messages').innerHTML += `<li class="list-group-item">${dataobject.nick}: ${dataobject.emoji}<a id="timestamp">${dataobject.time}</a></li>`;
+//     }
 
-})
+//     else if (dataobject.message) {document.querySelector('#messages').innerHTML += `<li class="list-group-item">${dataobject.nick}: ${dataobject.message}<a id="timestamp">${dataobject.time}</a></li>`;}
+
+//     else if (dataobject.pic) {
+
+//         document.querySelector('#messages').innerHTML += `<li class="list-group-item">${dataobject.nick}: <img src="${dataobject.pic}"><a>${time}</a></li>`;
+//     }
+
+
+// });
+
 
 socket.on('logout', (user)=> {
 
