@@ -23,11 +23,14 @@ img {width:3rem;
 #users, #game, #timer {visibility:none;}
 
 #users {list-style-type: none;
-    background-color: rgb(216, 215, 215);
+    background-color: white;
     color: green;
     font-size: 1.3rem;
+    font-weight: bold;
     text-align: center;
-    padding-left: 0;
+    padding:1rem;
+    border:1px dotted grey;
+    border-radius: 8px;
     }
 
 #game {visibility:none;
