@@ -18,13 +18,33 @@ const gameEl = document.querySelector("#second-wrapper")
 
 gameEl.style.display = 'none'
 
+const boardEl = document.querySelector("#game")
+
 const waitingMsgEl = document.querySelector("#waiting")
 
 waitingMsgEl.style.display = 'none'
 
 let rounds = 0;
 
-let timeStamp = Date.now()
+
+function showVirus() {
+
+    let virusImage = document.createElement(`img`)
+    virusImage.src = "assets/virus.png"
+
+    boardEl.style.cssText = "position:relative";
+    virusImage.style.cssText = "position:absolute";
+  
+    // assign coordinates, don't forget "px"!
+    let coords = boardEl.getBoundingClientRect();
+  
+    virusImage.style.left = coords.left + "50px";
+    virusImage.style.top = coords.top + "20px";
+  
+    boardEl.append(virusImage)
+
+    return
+  }
 
 document.querySelector('#login-form').addEventListener('submit', e => {
 
@@ -49,7 +69,6 @@ document.querySelector('#login-form').addEventListener('submit', e => {
 
 socket.on('start', users=>{
 
-        console.log(users)
 
         gameEl.style.display = 'flex';
         waitingMsgEl.style.display = 'none';
@@ -59,6 +78,8 @@ socket.on('start', users=>{
         let time =  new Date('dec 31, 2020 00:00:00')
 
         let n = 0
+
+        showVirus()
 
         setInterval(function() {
 
@@ -82,24 +103,7 @@ socket.on('start', users=>{
         rounds= 0;
 
 })
-// socket.on('chatmsg', dataobject => {
 
-//     feedbackEl.innerHTML = "";
-    
-//     if (dataobject.emoji) {
-
-//         document.querySelector('#messages').innerHTML += `<li class="list-group-item">${dataobject.nick}: ${dataobject.emoji}<a id="timestamp">${dataobject.time}</a></li>`;
-//     }
-
-//     else if (dataobject.message) {document.querySelector('#messages').innerHTML += `<li class="list-group-item">${dataobject.nick}: ${dataobject.message}<a id="timestamp">${dataobject.time}</a></li>`;}
-
-//     else if (dataobject.pic) {
-
-//         document.querySelector('#messages').innerHTML += `<li class="list-group-item">${dataobject.nick}: <img src="${dataobject.pic}"><a>${time}</a></li>`;
-//     }
-
-
-// });
 
 
 socket.on('logout', (user)=> {
