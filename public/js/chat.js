@@ -2,17 +2,23 @@
 
 const socket = io();
 
-const messageEl = document.querySelector('#message');
-
 const nickEl = document.querySelector('#nickname');
 
 const feedbackEl = document.querySelector('#feedback');
 
-const attachFormEl = document.querySelector("#my-awesome-dropzone")
-
 const usersEl = document.querySelector("#users")
+
 const loginEl = document.querySelector("#login-form")
 
+const titleEl = document.querySelector("#title-wrapper")
+
+const gameEl = document.querySelector("#second-wrapper")
+
+gameEl.style.display = 'none'
+
+const waitingMsgEl = document.querySelector("#waiting")
+
+waitingMsgEl.style.display = 'none'
 
 let userCounter = 0;
 
@@ -22,7 +28,16 @@ document.querySelector('#login-form').addEventListener('submit', e => {
 
     e.preventDefault();
 
-    loginEl.style.display = "none";
+    titleEl.style.display = "none";
+
+    waitingMsgEl.style.display = 'flex';
+
+    setInterval(function() {
+        gameEl.style.display = 'flex';
+        waitingMsgEl.style.display = 'none';}, 5000);
+
+    
+
 });
 
 

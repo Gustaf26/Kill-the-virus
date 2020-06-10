@@ -41,14 +41,27 @@ img {width:3rem;
 #gametitle{margin:1rem auto 1rem auto;
     color: darkblue;}
 
+#title-wrapper {display:flex;
+    flex-direction: column;
+    align-items: center;}
+
 #message-wrapper {
     flex-grow: 1;
 }
 
 #login-form {display:flex;
     justify-content: space-around;
-    margin-bottom: 1rem;
+    margin: 1rem auto;
 }
+
+#waiting{font-size: 1.5rem;
+    color: blue;
+    font-weight: bold;}
+
+#second-wrapper {display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;}
 
 #feedback {list-style-type: none;}
 
