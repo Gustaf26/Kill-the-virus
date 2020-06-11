@@ -25,6 +25,41 @@ const waitingMsgEl = document.querySelector("#waiting")
 waitingMsgEl.style.display = 'none'
 
 let rounds = 0;
+let level = null;
+
+const getLevelList = () => {
+    console.log("Requesting level list from server...");
+
+    socket.emit('get-level-list', (levels)=> {
+
+        updateLevels(levels)}) 
+}
+
+const updateLevels= (levels) => {
+
+    document.querySelector('#level').innerHTML = levels.map(level => `<option value="${level}">${level}</option>`).join("");
+
+    document.querySelector('#login-form').addEventListener('submit', e => {
+
+        e.preventDefault();
+    
+        if (nickEl.value=="") {
+    
+            alert('YOU NEED TO ENTER A COOL NAME');
+    
+            return
+        }
+        level = loginEl.level.value
+    
+        titleEl.style.display = "none";
+    
+        waitingMsgEl.style.display = 'flex';
+    
+        socket.emit('start-request', level, nickEl.value);
+    
+    });
+
+}
 
 
 function showVirus(x, y) {
@@ -46,26 +81,7 @@ function showVirus(x, y) {
     return
   }
 
-document.querySelector('#login-form').addEventListener('submit', e => {
 
-    e.preventDefault();
-
-    if (nickEl.value=="") {
-
-        alert('YOU NEED TO ENTER A COOL NAME');
-
-        return
-    }
-
-    titleEl.style.display = "none";
-
-    waitingMsgEl.style.display = 'flex';
-
-    socket.emit('start-request', nickEl.value);
-
-    
-
-});
 
 socket.on('start', (users, x, y) =>{
 
@@ -115,3 +131,8 @@ socket.on('logout', (user)=> {
     usersEl.innerHTML +=`<li class="logedout">${user.nick} has logged out</li>`
 
 })
+
+
+window.onload = () => {
+    getLevelList();
+}

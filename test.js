@@ -25,33 +25,74 @@ const io = SocketIO(server);
 
 let updatedUsers = []
 
-io.on('connection', (socket) => {
-    console.log("A client connected!");
+let currentLevel =[];
 
-    socket.on('disconnect', () => {
+let user = ""
+
+let levels = [
+
+  {name:'easy',
+  users: {}},
+  {name:'medium',
+  users: {}},
+  {name:'difficult',
+  users: {}}
+]
+
+function getListOfLevelNames() {
+  return levels.map(level => level.name);
+}
+
+function handleGetLevelsList(callback) {
+  updatedUsers=[]
+  callback(getListOfLevelNames())
+}
+
+io.on('connection', (socket) => {
+
+  console.log("A client connected!");
+
+  socket.on('disconnect', () => {
       console.log("Someone left the game :(");
     });
 
-  socket.on('start-request', user=> {
+  socket.on('get-level-list', handleGetLevelsList)
+
+  socket.on('start-request', (level, user)=> {
+
+    currentLevel.push(level)
+
+    console.log(currentLevel)
+
+    socket.join(level)
 
     updatedUsers.forEach(us=>{
 
-      if (user==us) {updatedUsers.pop(us)}
+      if (user==us) {updatedUsers.shift(us)}
 
-    })
+      })
 
-    if (user==updatedUsers[0]) {return}
+      updatedUsers.push(user)
 
-    updatedUsers.push(user)
+    /*Game starts only when both players in same level / room */
 
-    if (updatedUsers.length ==2) {
+    if (currentLevel[0] && currentLevel[1]===currentLevel[0]){     
 
-      x = Math.floor(Math.random()*500) 
-      y = Math.floor(Math.random()*380)
-      
-      io.emit('start', updatedUsers, x, y) }
+        if (user==updatedUsers[0]) {return}
 
-})
+
+        if (updatedUsers.length ==2) {
+
+          x = Math.floor(Math.random()*500) 
+          y = Math.floor(Math.random()*380)
+
+          currentLevel=[]
+          
+          io.to(level).emit('start', updatedUsers, x, y) }
+
+    }
+  
+    else {return}})    
 })
 
 /**
