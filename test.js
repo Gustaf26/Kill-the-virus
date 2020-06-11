@@ -32,11 +32,11 @@ let user = ""
 let levels = [
 
   {name:'easy',
-  users: {}},
+  users: []},
   {name:'medium',
-  users: {}},
+  users: []},
   {name:'difficult',
-  users: {}}
+  users: []}
 ]
 
 function getListOfLevelNames() {
@@ -60,39 +60,31 @@ io.on('connection', (socket) => {
 
   socket.on('start-request', (level, user)=> {
 
-    currentLevel.push(level)
-
-    console.log(currentLevel)
-
     socket.join(level)
-
-    updatedUsers.forEach(us=>{
-
-      if (user==us) {updatedUsers.shift(us)}
-
-      })
-
-      updatedUsers.push(user)
 
     /*Game starts only when both players in same level / room */
 
-    if (currentLevel[0] && currentLevel[1]===currentLevel[0]){     
+    levels.forEach(lev=> {
+      
+      if (lev.name==level) {
 
-        if (user==updatedUsers[0]) {return}
+        lev.users.push(user)
 
+        console.log(lev.users)
 
-        if (updatedUsers.length ==2) {
+        if (lev.users.length ==2) {
 
           x = Math.floor(Math.random()*500) 
           y = Math.floor(Math.random()*380)
-
-          currentLevel=[]
           
-          io.to(level).emit('start', updatedUsers, x, y) }
+          io.to(level).emit('start', lev.users, x, y)
+        
+          lev.users = []}
+        }
+      
+      else  {return}})
 
-    }
-  
-    else {return}})    
+  })    
 })
 
 /**
