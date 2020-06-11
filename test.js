@@ -29,23 +29,10 @@ io.on('connection', (socket) => {
     console.log("A client connected!");
 
     socket.on('disconnect', () => {
-      console.log("Someone left the chat :(");
+      console.log("Someone left the game :(");
     });
 
-    socket.on('chatmsg', dataobject => {
-      console.log(`${dataobject.nick} sent something nice: '%s'`, dataobject.message);
-      
-        io.emit('chatmsg', dataobject);
-});
-
-let requests = 0
-
-let x = 0
-let y = 0
-
   socket.on('start-request', user=> {
-
-  
 
     updatedUsers.forEach(us=>{
 
@@ -60,10 +47,9 @@ let y = 0
     if (updatedUsers.length ==2) {
 
       x = Math.floor(Math.random()*500) 
-       y = Math.floor(Math.random()*380)
+      y = Math.floor(Math.random()*380)
       
       io.emit('start', updatedUsers, x, y) }
-    
 
 })
 })
