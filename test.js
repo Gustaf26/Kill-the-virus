@@ -32,11 +32,14 @@ let user = ""
 let levels = [
 
   {name:'easy',
-  users: []},
+  users: [],
+  busy: 'false'},
   {name:'medium',
-  users: []},
+  users: [],
+  busy: 'false'},
   {name:'difficult',
-  users: []}
+  users: [],
+  busy: 'false'}
 ]
 
 function getListOfLevelNames() {
@@ -60,17 +63,19 @@ io.on('connection', (socket) => {
 
   socket.on('start-request', (level, user)=> {
 
-    socket.join(level)
+    
 
     /*Game starts only when both players in same level / room */
 
     levels.forEach(lev=> {
+
+      if (lev.busy==true) {return}
       
       if (lev.name==level) {
 
         lev.users.push(user)
 
-        console.log(lev.users)
+        socket.join(level)
 
         if (lev.users.length ==2) {
 
@@ -79,7 +84,9 @@ io.on('connection', (socket) => {
           
           io.to(level).emit('start', lev.users, x, y)
         
-          lev.users = []}
+          lev.users = []
+          lev.busy = true
+          }
         }
       
       else  {return}})
