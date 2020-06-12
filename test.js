@@ -64,9 +64,15 @@ function saveUserTimes(time, level, user) {
         user: user,
         time: time})}
 
-        console.log(lev.timeResults)
+    if (lev.timeResults.length==2) {
+
+        lev.timeResults.forEach(result=> {
+    
+        io.to(level).emit('display-results', result.time, result.user)
+        })}
 
       })
+
   }
 
 
@@ -113,6 +119,8 @@ io.on('connection', (socket) => {
 
           x = Math.floor(Math.random()*500) 
           y = Math.floor(Math.random()*380)
+
+          lev.timeResults=[]
 
           setTimeout(function(){
 

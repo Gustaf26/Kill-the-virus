@@ -119,13 +119,13 @@ socket.on('start', (users, user, level, x, y) =>{
             if (currentUser.length==2) { 
                 
                socket.emit('save-usertime', n, level, currentUser[0]);
-                console.log(currentUser[0])
+               usersEl.innerHTML =""
             }
             
             else if (currentUser.length == 1) {
 
                 socket.emit('save-usertime', n, level, currentUser[0]);
-                console.log(currentUser[0])}
+                usersEl.innerHTML =""}
 
                 currentUser=[]
             })
@@ -145,13 +145,12 @@ socket.on('saveusers', user=>{
     currentUser.push(user)
 })
 
-// socket.on('display-timeresult', (time)=> {
+socket.on('display-results', (result, user)=> {
 
-//     document.querySelector(`#${user.nick}`).remove()
 
-//     usersEl.innerHTML +=`<li class="logedout">${user.nick} has logged out</li>`
+    usersEl.innerHTML += `<p>${user} MADE IT ON ${result} seconds</p>`
 
-// })
+})
 
 
 window.onload = () => {
