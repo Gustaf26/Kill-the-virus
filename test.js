@@ -66,6 +66,8 @@ function saveUserTimes(time, level, user) {
 
     if (lev.timeResults.length==2) {
 
+        lev.busy=false
+
         lev.timeResults.forEach(result=> {
     
         io.to(level).emit('display-results', result.time, result.user)

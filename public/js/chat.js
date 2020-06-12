@@ -27,6 +27,7 @@ waitingMsgEl.style.display = 'none'
 let rounds = 0;
 let level = null;
 let currentUser = []
+let currentLevel = ""
 
 const getLevelList = () => {
     console.log("Requesting level list from server...");
@@ -87,7 +88,7 @@ function showVirus(x, y) {
 
 socket.on('start', (users, user, level, x, y) =>{
 
-
+        currentLevel = level
         gameEl.style.display = 'flex';
         waitingMsgEl.style.display = 'none';
         usersEl.innerHTML = `<p><span></span>${users[0]} AGAINST ${users[1]}<span></span><p>`
@@ -126,8 +127,6 @@ socket.on('start', (users, user, level, x, y) =>{
 
                 socket.emit('save-usertime', n, level, currentUser[0]);
                 usersEl.innerHTML =""}
-
-                currentUser=[]
             })
 
         rounds +=1
@@ -147,8 +146,14 @@ socket.on('saveusers', user=>{
 
 socket.on('display-results', (result, user)=> {
 
-
     usersEl.innerHTML += `<p>${user} MADE IT ON ${result} seconds</p>`
+
+    console.log(currentLevel)
+
+    setTimeout(function(){
+
+        socket.emit('start-request', currentLevel, currentUser[0]);  
+      }, 5000) 
 
 })
 
