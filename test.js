@@ -77,15 +77,28 @@ io.on('connection', (socket) => {
 
         socket.join(level)
 
+        let n = Math.floor(Math.random()*10000)
+
+        console.log(n, lev.users)
+
         if (lev.users.length ==2) {
 
           x = Math.floor(Math.random()*500) 
           y = Math.floor(Math.random()*380)
-          
-          io.to(level).emit('start', lev.users, x, y)
+
+          setTimeout(function(){
+
+            io.to(level).emit('start', lev.users, x, y)
         
-          lev.users = []
-          lev.busy = true
+            
+          }, n) 
+
+          setTimeout(function(){
+
+            lev.users = []
+            lev.busy = true
+            
+          }, n+1)
           }
         }
       
