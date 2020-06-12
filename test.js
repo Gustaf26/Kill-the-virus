@@ -59,8 +59,6 @@ function handleGetLevelsList(callback) {
 
 function saveUserTimes(time, level, sockId) {
 
-  console.log(level)
-
   levels.forEach(lev=>{
 
     if (lev.name==level){
@@ -71,10 +69,7 @@ function saveUserTimes(time, level, sockId) {
 
             us.timeResult=time
 
-            lev.finnishedPlayers += 1
-
-          }
-          
+            lev.finnishedPlayers += 1}          
 
           if (lev.finnishedPlayers==2) {
 
@@ -82,23 +77,15 @@ function saveUserTimes(time, level, sockId) {
 
             lev.users.forEach(us=>{
 
+              us.finnished == true
+
               io.to(level).emit('display-results', us.timeResult, us.name)
             })
+
             lev.finnishedPlayers = 0
-          }
-        })
+            
+          }})
       }
-
-    // if (lev.timeResults.length==2) {
-
-    //     lev.busy=false
-
-    //     lev.users.forEach(us=> {
-    
-    //     io.to(level).emit('display-results', us.timeResult, us.name)
-    //     })
-      
-    //   }
 
       })
 
@@ -131,18 +118,39 @@ io.on('connection', (socket) => {
     levels.forEach(lev=> {
 
       if (lev.busy==true) {return}
-      
-      if (lev.name==level) {
 
-        lev.users.push({
+       if (lev.users.length==2) {
+          const finnishedUsers = lev.users.map(us=>us.finnished==true)
+
+          console.log(lev.users, finnishedUsers)
+          if (finnishedUsers.length == 2) {
+
+          let n = Math.floor(Math.random()*10000)
+
+            x = Math.floor(Math.random()*500) 
+            y = Math.floor(Math.random()*380)
+  
+            setTimeout(function(){
+  
+              io.to(level).emit('start', lev.users, level, x, y)  
+            }, n) 
+  
+             lev.busy = true
+          }
+
+          else {return}
+       }
+      
+      else if (lev.name==level) {
+
+         lev.users.push({
           
           userId: socket.id,
           name: user,
-          timeResult:""})
+          timeResult:"",
+          finnished: false})
 
         socket.join(level)
-
-       // io.to(level).emit('saveusers', lev.users.userId)
 
         let n = Math.floor(Math.random()*10000)
 
@@ -156,12 +164,7 @@ io.on('connection', (socket) => {
             io.to(level).emit('start', lev.users, level, x, y)  
           }, n) 
 
-          setTimeout(function(){
-
-            //lev.users = []
-            lev.busy = true
-            
-          }, n+1)
+           lev.busy = true
           }
         }
       

@@ -88,13 +88,13 @@ function showVirus(x, y) {
 
 socket.on('start', (users, level, x, y) =>{
 
+         currentLevel = level
         gameEl.style.display = 'flex';
         waitingMsgEl.style.display = 'none';
         usersEl.innerHTML = `<p><span></span>${users[0].name} AGAINST ${users[1].name}<span></span><p>`
 
         
         let time =  new Date('dec 31, 2020 00:00:00')
-        //dec 31, 2020 00:00:00
 
         let n = 0
 
@@ -147,11 +147,11 @@ socket.on('display-results', (time, name)=> {
 
     usersEl.innerHTML += `<p>${name} MADE IT ON ${time} seconds</p>`
 
-    // setTimeout(function(){
+        setTimeout(function(){
 
-    //     socket.emit('restart', currentLevel, user);
+            socket.emit('start-request', currentLevel, name);
           
-    //   }, 5000) 
+            }, 5000) 
 
 })
 
