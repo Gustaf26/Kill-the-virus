@@ -34,15 +34,17 @@ let levels = [
   {name:'easy',
   users: [],
   busy: 'false',
-  timeResults: []},
+  finnishedPlayers: 0
+  },
   {name:'medium',
   users: [],
   busy: 'false',
-  timeResults: []},
+  finnishedPlayers: 0
+  },
   {name:'difficult',
   users: [],
   busy: 'false',
-  timeResults: []}
+  finnishedPlayers: 0}
 ]
 
 function getListOfLevelNames() {
@@ -54,24 +56,49 @@ function handleGetLevelsList(callback) {
   callback(getListOfLevelNames())
 }
 
-function saveUserTimes(time, level, user) {
+
+function saveUserTimes(time, level, sockId) {
+
+  console.log(level)
 
   levels.forEach(lev=>{
 
     if (lev.name==level){
-        
-        lev.timeResults.push({
-        user: user,
-        time: time})}
 
-    if (lev.timeResults.length==2) {
+        lev.users.forEach(us=>{
 
-        lev.busy=false
+          if (us.userId==sockId) {
 
-        lev.timeResults.forEach(result=> {
+            us.timeResult=time
+
+            lev.finnishedPlayers += 1
+
+          }
+          
+
+          if (lev.finnishedPlayers==2) {
+
+            lev.busy=false
+
+            lev.users.forEach(us=>{
+
+              io.to(level).emit('display-results', us.timeResult, us.name)
+            })
+            lev.finnishedPlayers = 0
+          }
+        })
+      }
+
+    // if (lev.timeResults.length==2) {
+
+    //     lev.busy=false
+
+    //     lev.users.forEach(us=> {
     
-        io.to(level).emit('display-results', result.time, result.user)
-        })}
+    //     io.to(level).emit('display-results', us.timeResult, us.name)
+    //     })
+      
+    //   }
 
       })
 
@@ -92,9 +119,9 @@ io.on('connection', (socket) => {
 
   socket.on('get-level-list', handleGetLevelsList)
 
-  socket.on('save-usertime', (time, level, user)=>{
+  socket.on('save-usertime', (time, level, sockId)=>{
 
-    saveUserTimes(time, level, user)
+    saveUserTimes(time, level, sockId)
   })
 
   socket.on('start-request', (level, user)=> {
@@ -103,17 +130,19 @@ io.on('connection', (socket) => {
 
     levels.forEach(lev=> {
 
-      console.log(lev.busy)
-
       if (lev.busy==true) {return}
       
       if (lev.name==level) {
 
-        lev.users.push(user)
+        lev.users.push({
+          
+          userId: socket.id,
+          name: user,
+          timeResult:""})
 
         socket.join(level)
 
-        io.to(level).emit('saveusers', user)
+       // io.to(level).emit('saveusers', lev.users.userId)
 
         let n = Math.floor(Math.random()*10000)
 
@@ -122,16 +151,14 @@ io.on('connection', (socket) => {
           x = Math.floor(Math.random()*500) 
           y = Math.floor(Math.random()*380)
 
-          lev.timeResults=[]
-
           setTimeout(function(){
 
-            io.to(level).emit('start', lev.users, user, level, x, y)  
+            io.to(level).emit('start', lev.users, level, x, y)  
           }, n) 
 
           setTimeout(function(){
 
-            lev.users = []
+            //lev.users = []
             lev.busy = true
             
           }, n+1)
@@ -140,8 +167,42 @@ io.on('connection', (socket) => {
       
       else  {return}})
 
-  })    
-})
+  })})
+
+//   socket.on('restart', (level, user)=> {
+
+//     socket.join(level)
+
+//     io.to(level).emit('saveusers', user)
+
+//     let n = Math.floor(Math.random()*10000)
+
+//     levels.forEach(lev=>{
+
+//       if (lev.name == level) {
+
+//         lev.restartusers.push(user)
+//       }
+
+//       if (lev.restartusers.length ==2) {
+
+//         x = Math.floor(Math.random()*500) 
+//         y = Math.floor(Math.random()*380)
+  
+//         lev.timeResults=[]
+  
+//         setTimeout(function(){
+
+//           console.log(currentUsers)
+  
+//           io.to(level).emit('start', currentUsers, user, level, x, y)  
+//         }, n) 
+//     }})
+
+//   })
+
+
+// })
 
 /**
  * Listen on provided port, on all network interfaces.

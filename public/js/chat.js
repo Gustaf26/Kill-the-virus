@@ -26,7 +26,7 @@ waitingMsgEl.style.display = 'none'
 
 let rounds = 0;
 let level = null;
-let currentUser = []
+let currentUsers = []
 let currentLevel = ""
 
 const getLevelList = () => {
@@ -86,14 +86,13 @@ function showVirus(x, y) {
 
 
 
-socket.on('start', (users, user, level, x, y) =>{
+socket.on('start', (users, level, x, y) =>{
 
-        currentLevel = level
         gameEl.style.display = 'flex';
         waitingMsgEl.style.display = 'none';
-        usersEl.innerHTML = `<p><span></span>${users[0]} AGAINST ${users[1]}<span></span><p>`
+        usersEl.innerHTML = `<p><span></span>${users[0].name} AGAINST ${users[1].name}<span></span><p>`
 
-
+        
         let time =  new Date('dec 31, 2020 00:00:00')
         //dec 31, 2020 00:00:00
 
@@ -113,21 +112,21 @@ socket.on('start', (users, user, level, x, y) =>{
 
         document.querySelector("#virusImg").addEventListener('click', e=> {
 
-            document.querySelector("#virusImg").style.display='none';
+            document.querySelector("#virusImg").remove()
 
             clearInterval(timer)
-
-            if (currentUser.length==2) { 
-                
-               socket.emit('save-usertime', n, level, currentUser[0]);
-               usersEl.innerHTML =""
+                           
+               socket.emit('save-usertime', n, level, socket.id);
+               usersEl.innerHTML ="";
+               
             }
             
-            else if (currentUser.length == 1) {
+            // else if (currentUsers.length < 2) {
 
-                socket.emit('save-usertime', n, level, currentUser[0]);
-                usersEl.innerHTML =""}
-            })
+            //     socket.emit('save-usertime', n, level, currentUsers[0]);
+            //     usersEl.innerHTML ="";
+            //     }}
+            )
 
         rounds +=1
 
@@ -139,21 +138,20 @@ socket.on('start', (users, user, level, x, y) =>{
 
 })
 
-socket.on('saveusers', user=>{
+// socket.on('saveusers', userId=>{
 
-    currentUser.push(user)
-})
+//     currentUsers.push(userId)
+// })
 
-socket.on('display-results', (result, user)=> {
+socket.on('display-results', (time, name)=> {
 
-    usersEl.innerHTML += `<p>${user} MADE IT ON ${result} seconds</p>`
+    usersEl.innerHTML += `<p>${name} MADE IT ON ${time} seconds</p>`
 
-    console.log(currentLevel)
+    // setTimeout(function(){
 
-    setTimeout(function(){
-
-        socket.emit('start-request', currentLevel, currentUser[0]);  
-      }, 5000) 
+    //     socket.emit('restart', currentLevel, user);
+          
+    //   }, 5000) 
 
 })
 
