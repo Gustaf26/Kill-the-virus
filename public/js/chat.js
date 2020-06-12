@@ -26,6 +26,7 @@ waitingMsgEl.style.display = 'none'
 
 let rounds = 0;
 let level = null;
+let currentUser = []
 
 const getLevelList = () => {
     console.log("Requesting level list from server...");
@@ -84,21 +85,22 @@ function showVirus(x, y) {
 
 
 
-socket.on('start', (users, x, y) =>{
+socket.on('start', (users, user, level, x, y) =>{
 
 
         gameEl.style.display = 'flex';
         waitingMsgEl.style.display = 'none';
-        usersEl.innerHTML = `${users[0]} AGAINST ${users[1]}`
+        usersEl.innerHTML = `<p><span></span>${users[0]} AGAINST ${users[1]}<span></span><p>`
 
 
         let time =  new Date('dec 31, 2020 00:00:00')
+        //dec 31, 2020 00:00:00
 
         let n = 0
 
         showVirus(x, y)
 
-        setInterval(function timer() {
+        let timer = setInterval(function () {
 
             time.setSeconds(n) 
 
@@ -112,30 +114,44 @@ socket.on('start', (users, x, y) =>{
 
             document.querySelector("#virusImg").style.display='none';
 
+            clearInterval(timer)
+
+            if (currentUser.length==2) { 
+                
+               socket.emit('save-usertime', n, level, currentUser[0]);
+                console.log(currentUser[0])
+            }
             
-        })
+            else if (currentUser.length == 1) {
+
+                socket.emit('save-usertime', n, level, currentUser[0]);
+                console.log(currentUser[0])}
+
+                currentUser=[]
+            })
 
         rounds +=1
 
         if (rounds==10) {
 
-            alert('End of the game')
-
-        }
+            alert('End of the game')}
 
         rounds= 0;
 
 })
 
+socket.on('saveusers', user=>{
 
-
-socket.on('logout', (user)=> {
-
-    document.querySelector(`#${user.nick}`).remove()
-
-    usersEl.innerHTML +=`<li class="logedout">${user.nick} has logged out</li>`
-
+    currentUser.push(user)
 })
+
+// socket.on('display-timeresult', (time)=> {
+
+//     document.querySelector(`#${user.nick}`).remove()
+
+//     usersEl.innerHTML +=`<li class="logedout">${user.nick} has logged out</li>`
+
+// })
 
 
 window.onload = () => {

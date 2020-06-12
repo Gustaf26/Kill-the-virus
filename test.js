@@ -33,13 +33,16 @@ let levels = [
 
   {name:'easy',
   users: [],
-  busy: 'false'},
+  busy: 'false',
+  timeResults: []},
   {name:'medium',
   users: [],
-  busy: 'false'},
+  busy: 'false',
+  timeResults: []},
   {name:'difficult',
   users: [],
-  busy: 'false'}
+  busy: 'false',
+  timeResults: []}
 ]
 
 function getListOfLevelNames() {
@@ -50,6 +53,22 @@ function handleGetLevelsList(callback) {
   updatedUsers=[]
   callback(getListOfLevelNames())
 }
+
+function saveUserTimes(time, level, user) {
+
+  levels.forEach(lev=>{
+
+    if (lev.name==level){
+        
+        lev.timeResults.push({
+        user: user,
+        time: time})}
+
+        console.log(lev.timeResults)
+
+      })
+  }
+
 
 io.on('connection', (socket) => {
 
@@ -65,8 +84,12 @@ io.on('connection', (socket) => {
 
   socket.on('get-level-list', handleGetLevelsList)
 
-  socket.on('start-request', (level, user)=> {
+  socket.on('save-usertime', (time, level, user)=>{
 
+    saveUserTimes(time, level, user)
+  })
+
+  socket.on('start-request', (level, user)=> {
 
     /*Game starts only when both players in same level / room */
 
@@ -82,6 +105,8 @@ io.on('connection', (socket) => {
 
         socket.join(level)
 
+        io.to(level).emit('saveusers', user)
+
         let n = Math.floor(Math.random()*10000)
 
         if (lev.users.length ==2) {
@@ -91,9 +116,7 @@ io.on('connection', (socket) => {
 
           setTimeout(function(){
 
-            io.to(level).emit('start', lev.users, x, y)
-        
-            
+            io.to(level).emit('start', lev.users, user, level, x, y)  
           }, n) 
 
           setTimeout(function(){
