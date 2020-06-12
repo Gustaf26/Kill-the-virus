@@ -66,6 +66,7 @@ function showVirus(x, y) {
 
     let virusImage = document.createElement(`img`)
     virusImage.src = "assets/virus.png"
+    virusImage.id = "virusImg"
 
     boardEl.style.cssText = "position:relative";
     virusImage.style.cssText = "position:absolute";
@@ -95,11 +96,9 @@ socket.on('start', (users, x, y) =>{
 
         let n = 0
 
-        console.log(x,y)
-
         showVirus(x, y)
 
-        setInterval(function() {
+        setInterval(function timer() {
 
             time.setSeconds(n) 
 
@@ -109,6 +108,12 @@ socket.on('start', (users, x, y) =>{
 
         }, 1000)
 
+        document.querySelector("#virusImg").addEventListener('click', e=> {
+
+            document.querySelector("#virusImg").style.display='none';
+
+            
+        })
 
         rounds +=1
 

@@ -56,18 +56,23 @@ io.on('connection', (socket) => {
   console.log("A client connected!");
 
   socket.on('disconnect', () => {
+
       console.log("Someone left the game :(");
+
+      levels.forEach(lev=> {lev.busy=false})
+
     });
 
   socket.on('get-level-list', handleGetLevelsList)
 
   socket.on('start-request', (level, user)=> {
 
-    
 
     /*Game starts only when both players in same level / room */
 
     levels.forEach(lev=> {
+
+      console.log(lev.busy)
 
       if (lev.busy==true) {return}
       
@@ -78,8 +83,6 @@ io.on('connection', (socket) => {
         socket.join(level)
 
         let n = Math.floor(Math.random()*10000)
-
-        console.log(n, lev.users)
 
         if (lev.users.length ==2) {
 
