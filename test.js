@@ -65,6 +65,8 @@ function saveUserTimes(time, level, sockId) {
 
      if (updatedLevel.finnishedPlayers === 2) {
 
+            checkPoints(updatedLevel.users[0].timeResult, updatedLevel.users[1].timeResult, updatedLevel)
+
              io.to(level).emit('display-results', updatedLevel.users[0].timeResult, updatedLevel.users[1].timeResult, updatedLevel.users[0].name, updatedLevel.users[1].name, updatedLevel.name)
 
              let n = Math.floor(Math.random()*10000)
@@ -74,7 +76,7 @@ function saveUserTimes(time, level, sockId) {
       
              setTimeout(function(){
       
-               io.to(level).emit('start', updatedLevel.users, updatedLevel.name, x, y)},n)
+               io.to(level).emit('start', updatedLevel.users, updatedLevel.name, x, y)}, n)
 
             updatedLevel.busy=false
             updatedLevel.finnishedPlayers = 0
@@ -105,6 +107,37 @@ function getLevel(level) {
 
   return levels.filter(lev=>lev.name == level)
 
+}
+
+function checkPoints(timeOne, timeTwo, level) {
+
+  const users = level.users;
+
+  if (timeOne > timeTwo) {
+
+    users[1].points +=1
+    console.log(users[0].points)
+  }
+
+  else if (timeOne < timeTwo) {
+    users[0].points +=1; 
+    console.log(users[0].points)}
+
+  else if (timeOne == timeTwo) {
+    users[1].points +=1; 
+    users[0].points +=1}
+
+  if (users[1].points == 5){
+    console.log(users[1].name + ' WON')
+
+  return}
+
+  if (users[0].points == 5){
+    console.log(users[0].name + ' WON')
+
+  return}
+
+  return
 }
 
 function getUser(users, sockId) {
@@ -147,7 +180,8 @@ io.on('connection', (socket) => {
           userId: socket.id,
           name: user,
           timeResult:"",
-          finnished: false})
+          finnished: false,
+          points: 0})
 
         socket.join(level)
 
