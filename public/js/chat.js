@@ -88,7 +88,8 @@ function showVirus(x, y) {
 
 socket.on('start', (users, level, x, y) =>{
 
-         currentLevel = level
+        console.log(users, level)
+        currentLevel = level
         gameEl.style.display = 'flex';
         waitingMsgEl.style.display = 'none';
         usersEl.innerHTML = `<p><span></span>${users[0].name} AGAINST ${users[1].name}<span></span><p>`
@@ -119,14 +120,7 @@ socket.on('start', (users, level, x, y) =>{
                socket.emit('save-usertime', n, level, socket.id);
                usersEl.innerHTML ="";
                
-            }
-            
-            // else if (currentUsers.length < 2) {
-
-            //     socket.emit('save-usertime', n, level, currentUsers[0]);
-            //     usersEl.innerHTML ="";
-            //     }}
-            )
+        })
 
         rounds +=1
 
@@ -138,21 +132,14 @@ socket.on('start', (users, level, x, y) =>{
 
 })
 
-// socket.on('saveusers', userId=>{
+socket.on('display-results', ( timeOne, timeTwo, nameOne, nameTwo, level)=> {
 
-//     currentUsers.push(userId)
-// })
-
-socket.on('display-results', (time, name)=> {
-
-    usersEl.innerHTML += `<p>${name} MADE IT ON ${time} seconds</p>`
-
-        setTimeout(function(){
-
-            socket.emit('start-request', currentLevel, name);
-          
-            }, 5000) 
-
+    usersEl.innerHTML = `<div>
+    
+                        <p>${nameOne} MADE IT ON ${timeOne} seconds</p>
+                        <p>${nameTwo} MADE IT ON ${timeTwo} seconds</p>
+                    
+                    </div>`
 })
 
 

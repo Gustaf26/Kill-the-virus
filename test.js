@@ -59,37 +59,58 @@ function handleGetLevelsList(callback) {
 
 function saveUserTimes(time, level, sockId) {
 
-  levels.forEach(lev=>{
+  const updatedLevel =updateState(time,level,sockId)
 
-    if (lev.name==level){
+  console.log(updatedLevel.finnishedPlayers)
 
-        lev.users.forEach(us=>{
+     if (updatedLevel.finnishedPlayers === 2) {
 
-          if (us.userId==sockId) {
+             io.to(level).emit('display-results', updatedLevel.users[0].timeResult, updatedLevel.users[1].timeResult, updatedLevel.users[0].name, updatedLevel.users[1].name, updatedLevel.name)
 
-            us.timeResult=time
+             let n = Math.floor(Math.random()*10000)
 
-            lev.finnishedPlayers += 1}          
+             x = Math.floor(Math.random()*500) 
+             y = Math.floor(Math.random()*380)
+      
+             setTimeout(function(){
+      
+               io.to(level).emit('start', updatedLevel.users, updatedLevel.name, x, y)},n)
 
-          if (lev.finnishedPlayers==2) {
+            updatedLevel.busy=false
+            updatedLevel.finnishedPlayers = 0
+          }     
 
-            lev.busy=false
-
-            lev.users.forEach(us=>{
-
-              us.finnished == true
-
-              io.to(level).emit('display-results', us.timeResult, us.name)
-            })
-
-            lev.finnishedPlayers = 0
-            
-          }})
+      else {return}
       }
 
-      })
+function updateState(time,level,sockId) {
 
-  }
+  const levelToUpdate = levels.filter(lev=>lev.name == level)
+
+      levelToUpdate[0].users.forEach(us=>{
+
+        if (us.userId==sockId) {
+
+            us.timeResult=time
+            us.finnished = true
+        }
+  })
+
+  levelToUpdate[0].finnishedPlayers += 1
+
+    return levelToUpdate[0]
+}
+
+function getLevel(level) {
+
+  return levels.filter(lev=>lev.name == level)
+
+}
+
+function getUser(users, sockId) {
+
+  return users.filter(us=> us.userId == sockId)
+}
 
 
 io.on('connection', (socket) => {
@@ -115,35 +136,13 @@ io.on('connection', (socket) => {
 
     /*Game starts only when both players in same level / room */
 
-    levels.forEach(lev=> {
+    const levelDetails = getLevel(level)
 
-      if (lev.busy==true) {return}
+       if (levelDetails[0].busy==true) {return}
+       
+          // (levelDetails[0].name==level)
 
-       if (lev.users.length==2) {
-          const finnishedUsers = lev.users.map(us=>us.finnished==true)
-
-          console.log(lev.users, finnishedUsers)
-          if (finnishedUsers.length == 2) {
-
-          let n = Math.floor(Math.random()*10000)
-
-            x = Math.floor(Math.random()*500) 
-            y = Math.floor(Math.random()*380)
-  
-            setTimeout(function(){
-  
-              io.to(level).emit('start', lev.users, level, x, y)  
-            }, n) 
-  
-             lev.busy = true
-          }
-
-          else {return}
-       }
-      
-      else if (lev.name==level) {
-
-         lev.users.push({
+        levelDetails[0].users.push({
           
           userId: socket.id,
           name: user,
@@ -154,55 +153,44 @@ io.on('connection', (socket) => {
 
         let n = Math.floor(Math.random()*10000)
 
-        if (lev.users.length ==2) {
+        if (levelDetails[0].users.length ==2) {
 
           x = Math.floor(Math.random()*500) 
           y = Math.floor(Math.random()*380)
 
           setTimeout(function(){
 
-            io.to(level).emit('start', lev.users, level, x, y)  
-          }, n) 
+            io.to(level).emit('start', levelDetails[0].users, level, x, y) 
+            
+            levelDetails[0].busy = true
+          }, n)  }
 
-           lev.busy = true
-          }
-        }
+        else {return}
       
-      else  {return}})
+      })
 
-  })})
+// socket.on('restarting', (level)=> {
 
-//   socket.on('restart', (level, user)=> {
+//   const levelDetails = getLevel(level)
 
-//     socket.join(level)
+//   console.log(levelDetails)
 
-//     io.to(level).emit('saveusers', user)
+//        let n = Math.floor(Math.random()*10000)
 
-//     let n = Math.floor(Math.random()*10000)
+//        x = Math.floor(Math.random()*500) 
+//        y = Math.floor(Math.random()*380)
 
-//     levels.forEach(lev=>{
+//        setTimeout(function(){
 
-//       if (lev.name == level) {
+//          io.to(level).emit('start', levelDetails[0].users, levelDetails[0].name, x, y) 
+        
+//         levelDetails[0].busy = true;
+//         levelDetails[0].finnishedPlayers = 0
+//        }, n)
+      
+//       })
+})
 
-//         lev.restartusers.push(user)
-//       }
-
-//       if (lev.restartusers.length ==2) {
-
-//         x = Math.floor(Math.random()*500) 
-//         y = Math.floor(Math.random()*380)
-  
-//         lev.timeResults=[]
-  
-//         setTimeout(function(){
-
-//           console.log(currentUsers)
-  
-//           io.to(level).emit('start', currentUsers, user, level, x, y)  
-//         }, n) 
-//     }})
-
-//   })
 
 
 // })
