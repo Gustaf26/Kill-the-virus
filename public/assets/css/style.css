@@ -24,8 +24,8 @@ img {width:3rem;
 
 #users {list-style-type: none;
     background-color: rgb(232, 240, 248);
-    color: rgb(88, 88, 196);
-    font-size: 2rem;
+    color: darkblue;
+    font-size: 1.5rem;
     line-height: 1em;
     text-align: center;
     padding: 0.5rem 1rem 0.5rem 1rem;
@@ -60,7 +60,7 @@ img {width:3rem;
 }
 
 #waiting{font-size: 1.5rem;
-    color: blue;
+    color: darkblue;
     font-weight: bold;}
 
 #second-wrapper {display:flex;
@@ -69,6 +69,10 @@ img {width:3rem;
     justify-content: center;}
 
 #feedback {list-style-type: none;}
+
+#results{font-size: 1.25rem;
+    color: darkblue;
+    font-weight: bold;}
 
 #timer {text-align: center;
     font-size: xx-large;

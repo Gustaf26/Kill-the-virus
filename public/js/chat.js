@@ -132,10 +132,10 @@ socket.on('display-results', ( timeOne, timeTwo, nameOne, nameTwo, level)=> {
 
     audio.pause()
 
-    usersEl.innerHTML = `<div>
+    usersEl.innerHTML = `<div id="results">
     
-                            <p>${nameOne} MADE IT ON ${timeOne} seconds</p>
-                            <p>${nameTwo} MADE IT ON ${timeTwo} seconds</p>
+                            <p>${nameOne} : ${timeOne} seconds</p>
+                            <p>${nameTwo} : ${timeTwo} seconds</p>
                     
                         </div>`
 })
