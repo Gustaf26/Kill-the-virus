@@ -2,6 +2,8 @@
 
 const socket = io();
 
+const appEl = document.querySelector("#gamewrapper")
+
 const nickEl = document.querySelector('#nickname');
 
 const feedbackEl = document.querySelector('#feedback');
@@ -30,10 +32,7 @@ result.style.display = 'none'
 
 const audio = new Audio('./assets/music.mp3');
 
-let rounds = 0;
 let level = null;
-let currentUsers = []
-let currentLevel = ""
 
 const getLevelList = () => {
 
@@ -96,8 +95,6 @@ function showVirus(x, y) {
 
 socket.on('start', (users, level, x, y) =>{
 
-        console.log(users, level)
-        currentLevel = level
         gameEl.style.display = 'flex';
         waitingMsgEl.style.display = 'none';
         usersEl.innerHTML = `<p><span></span>${users[0].name} vs. ${users[1].name}<span></span><p>`
@@ -162,6 +159,7 @@ socket.on('finnished', (resultOne, resultTwo, userOne, userTwo, levelName) => {
     if (resultOne>resultTwo) {
 
         finalResEl.innerHTML +=`<p>${userOne} is the winner!!</p>`
+        appEl.style.backgroundImage ='linear-gradient(to right, darkblue , azure)'
     }
 
     else {
