@@ -94,7 +94,7 @@ socket.on('start', (users, level, x, y) =>{
         currentLevel = level
         gameEl.style.display = 'flex';
         waitingMsgEl.style.display = 'none';
-        usersEl.innerHTML = `<p><span></span>${users[0].name} AGAINST ${users[1].name}<span></span><p>`
+        usersEl.innerHTML = `<p><span></span>${users[0].name} vs. ${users[1].name}<span></span><p>`
 
         
         let time =  new Date('dec 31, 2020 00:00:00')
