@@ -168,7 +168,9 @@ io.on('connection', (socket) => {
 
       console.log("Someone left the game :(");
 
-      levels.forEach(lev=> {lev.busy=false})
+      levels.forEach(lev=> {
+        lev.busy=false; 
+        lev.users=[]})
 
     });
 
@@ -226,7 +228,7 @@ io.on('connection', (socket) => {
 
     let lev = getLevel(level)
     lev.busy=false
-    
+
     socket.leave(level)
     console.log('user has lefte the level:' + level)
 
