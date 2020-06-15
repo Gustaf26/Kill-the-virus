@@ -25,26 +25,23 @@ const io = SocketIO(server);
 
 let updatedUsers = []
 
-let currentLevel =[];
-
-let user = ""
-
 let levels = [
 
   {name:'easy',
   users: [],
-  busy: 'false',
+  busy: false,
   finnishedPlayers: 0
   },
   {name:'medium',
   users: [],
-  busy: 'false',
+  busy: false,
   finnishedPlayers: 0
   },
   {name:'difficult',
   users: [],
-  busy: 'false',
-  finnishedPlayers: 0}
+  busy: false,
+  finnishedPlayers: 0
+ }
 ]
 
 function getListOfLevelNames() {
@@ -67,7 +64,11 @@ function saveUserTimes(time, level, sockId) {
 
             if (finnished==true) {
 
-              io.to(level).emit('finnished', updatedLevel.users[0].points, updatedLevel.users[1].points, updatedLevel.users[0].name, updatedLevel.users[1].name)
+              io.to(level).emit('finnished', updatedLevel.users[0].points, updatedLevel.users[1].points, updatedLevel.users[0].name, updatedLevel.users[1].name, updatedLevel.name)
+
+              updatedLevel.busy=false
+              updatedLevel.finnishedPlayers = 0
+              updatedLevel.users=[]
 
               return
             }
@@ -111,7 +112,7 @@ function updateState(time,level,sockId) {
 
 function getLevel(level) {
 
-  return levels.filter(lev=>lev.name == level)
+  return levels.filter(lev=>lev.name === level)
 
 }
 
@@ -183,7 +184,7 @@ io.on('connection', (socket) => {
 
     const levelDetails = getLevel(level)
 
-      if (levelDetails[0].busy==true) {
+      if (levelDetails[0].busy===true) {
         
         return}
 
@@ -216,6 +217,13 @@ io.on('connection', (socket) => {
         return}
       
       })
+
+  socket.on('leave-room', (level)=>{
+
+    socket.leave(level)
+    console.log('user has lefte the level:' + level)
+
+  })
 })
 
 

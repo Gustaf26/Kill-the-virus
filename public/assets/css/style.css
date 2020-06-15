@@ -81,6 +81,7 @@ img {width:3rem;
     margin-bottom: 4.5rem;}
 
 #finalresults {font-size: 1.25rem;
+    list-style-type: none;
     color: darkblue;
     font-weight: bold;}
 

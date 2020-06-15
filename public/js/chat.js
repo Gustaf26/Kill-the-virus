@@ -144,9 +144,8 @@ socket.on('display-results', ( timeOne, timeTwo, nameOne, nameTwo, level)=> {
                         </div>`
 })
 
-socket.on('finnished', (resultOne, resultTwo, userOne, userTwo) => {
+socket.on('finnished', (resultOne, resultTwo, userOne, userTwo, levelName) => {
 
-    console.log("Im reading the finnished event")
     audio.pause()
 
     gameEl.style.display ='none'
@@ -162,14 +161,15 @@ socket.on('finnished', (resultOne, resultTwo, userOne, userTwo) => {
 
     if (resultOne>resultTwo) {
 
-         finalResEl = document.querySelector("#finalresults")
-        .append(`${userOne} is the winner!!`)
+        finalResEl.innerHTML +=`<p>${userOne} is the winner!!</p>`
     }
 
     else {
         
-         finalResEl = document.querySelector("#finalresults")
-        .append(`${userTwo} is the winner!!`) }
+         finalResEl.innerHTML+=`<p>${userTwo} is the winner!!</p>` }
+
+    console.log(levelName)
+    socket.emit('leave-room', levelName);
 
     return
 })
