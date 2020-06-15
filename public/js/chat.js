@@ -80,11 +80,8 @@ function showVirus(x, y) {
     boardEl.style.cssText = "position:relative";
     virusImage.style.cssText = "position:absolute";
   
-    // assign coordinates
-    let coords = boardEl.getBoundingClientRect(); 
-  
-    virusImage.style.left = coords.left + x + "px";
-    virusImage.style.top = coords.top + y +"px";
+    virusImage.style.left = x + "px";
+    virusImage.style.top =  y +"px";
   
     boardEl.append(virusImage)
 

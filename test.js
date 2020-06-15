@@ -77,8 +77,10 @@ function saveUserTimes(time, level, sockId) {
 
             let n = Math.floor(Math.random()*10000)
 
-            x = Math.floor(Math.random()*350) 
-            y = Math.floor(Math.random()*150)
+            x = Math.floor(Math.random()*450) 
+            y = Math.floor(Math.random()*250)
+
+            console.log(y)
       
             setTimeout(function(){
       
@@ -202,8 +204,10 @@ io.on('connection', (socket) => {
 
       if (levelDetails[0].users.length ==2) {
 
-          x = Math.floor(Math.random()*350) 
-          y = Math.floor(Math.random()*350)
+          x = Math.floor(Math.random()*450) 
+          y = Math.floor(Math.random()*250)
+
+          console.log(y)
 
           setTimeout(function(){
 
