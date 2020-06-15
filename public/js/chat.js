@@ -157,6 +157,19 @@ socket.on('finnished', (resultOne, resultTwo, userOne, userTwo) => {
                             <p>${userTwo} : ${resultTwo} points</p>
                         
                         </div>`
+    
+    const finalResEl = document.querySelector("#finalresults")
+
+    if (resultOne>resultTwo) {
+
+         finalResEl = document.querySelector("#finalresults")
+        .append(`${userOne} is the winner!!`)
+    }
+
+    else {
+        
+         finalResEl = document.querySelector("#finalresults")
+        .append(`${userTwo} is the winner!!`) }
 
     return
 })
