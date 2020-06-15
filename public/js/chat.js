@@ -24,6 +24,10 @@ const waitingMsgEl = document.querySelector("#waiting")
 
 waitingMsgEl.style.display = 'none'
 
+const resultEl = document.querySelector('#result')
+
+result.style.display = 'none'
+
 const audio = new Audio('./assets/music.mp3');
 
 let rounds = 0;
@@ -138,6 +142,23 @@ socket.on('display-results', ( timeOne, timeTwo, nameOne, nameTwo, level)=> {
                             <p>${nameTwo} : ${timeTwo} seconds</p>
                     
                         </div>`
+})
+
+socket.on('finnished', (resultOne, resultTwo, userOne, userTwo) => {
+
+    console.log("Im reading the finnished event")
+    audio.pause()
+
+    gameEl.style.display ='none'
+    resultEl.style.display ='flex'
+    resultEl.innerHTML = `<div id="finalresults">
+    
+                            <p>${userOne} : ${resultOne} points</p>
+                            <p>${userTwo} : ${resultTwo} points</p>
+                        
+                        </div>`
+
+    return
 })
 
 

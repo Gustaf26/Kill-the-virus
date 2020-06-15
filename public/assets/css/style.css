@@ -36,8 +36,8 @@ img {width:3rem;
 #users p {margin: 0}
 
 #game {visibility:none;
-    height: 600px;
-    min-width: 600px;
+    height: 500px;
+    min-width: 500px;
     border: 1px dotted grey;
     background-color: rgb(239, 243, 243);
     
@@ -78,4 +78,18 @@ img {width:3rem;
     font-size: xx-large;
     color: cadetblue;
     visibility:none;
-    }
+    margin-bottom: 4.5rem;}
+
+#finalresults {font-size: 1.25rem;
+    color: darkblue;
+    font-weight: bold;}
+
+footer{position:fixed;
+    width:100%;
+    bottom: 0;
+    left:0;
+    border: darkblue;
+    background-color: rgb(213, 252, 252);
+    padding: 1rem;
+    text-align: center;
+    color: darkblue;}

@@ -61,22 +61,28 @@ function saveUserTimes(time, level, sockId) {
 
   const updatedLevel =updateState(time,level,sockId)
 
-  console.log(updatedLevel.finnishedPlayers)
-
      if (updatedLevel.finnishedPlayers === 2) {
 
-            checkPoints(updatedLevel.users[0].timeResult, updatedLevel.users[1].timeResult, updatedLevel)
+            const finnished = checkPoints(updatedLevel.users[0].timeResult, updatedLevel.users[1].timeResult, updatedLevel)
+
+            if (finnished==true) {
+
+              io.to(level).emit('finnished', updatedLevel.users[0].points, updatedLevel.users[1].points, updatedLevel.users[0].name, updatedLevel.users[1].name)
+
+              return
+            }
 
             io.to(level).emit('display-results', updatedLevel.users[0].timeResult, updatedLevel.users[1].timeResult, updatedLevel.users[0].name, updatedLevel.users[1].name, updatedLevel.name)
 
             let n = Math.floor(Math.random()*10000)
 
-            x = Math.floor(Math.random()*500) 
-            y = Math.floor(Math.random()*380)
+            x = Math.floor(Math.random()*350) 
+            y = Math.floor(Math.random()*350)
       
             setTimeout(function(){
       
-               io.to(level).emit('start', updatedLevel.users, updatedLevel.name, x, y)}, n)
+               io.to(level).emit('start', updatedLevel.users, updatedLevel.name, x, y)}
+               , n)
 
             updatedLevel.busy=false
             updatedLevel.finnishedPlayers = 0}     
@@ -116,35 +122,40 @@ function checkPoints(timeOne, timeTwo, level) {
   if (timeOne > timeTwo) {
 
     users[1].points +=1
-    console.log(users[0].points)
+
+    if (Number(users[1].points) === 5){
+
+      console.log('finnished')
+  
+      return true}
   }
 
   else if (timeOne < timeTwo) {
+
+    console.log(users[0].points)
+
     users[0].points +=1; 
-    console.log(users[0].points)}
+
+    if (Number(users[0].points) === 5){
+
+      console.log('finnished')
+  
+      return true}
+  
+  }
 
   else if (timeOne == timeTwo) {
+
     users[1].points +=1; 
-    users[0].points +=1}
+    users[0].points +=1
+  
+  }
 
-  if (users[1].points == 5){
-    console.log(users[1].name + ' WON')
-
-  return}
-
-  if (users[0].points == 5){
-    console.log(users[0].name + ' WON')
-
-  return}
-
-  return
+  return false
 }
 
-function getUser(users, sockId) {
 
-  return users.filter(us=> us.userId == sockId)
-}
-
+// Events on connection
 
 io.on('connection', (socket) => {
 
@@ -172,9 +183,9 @@ io.on('connection', (socket) => {
 
     const levelDetails = getLevel(level)
 
-      if (levelDetails[0].busy==true) {return}
-       
-          // (levelDetails[0].name==level)
+      if (levelDetails[0].busy==true) {
+        
+        return}
 
       levelDetails[0].users.push({
           
@@ -190,8 +201,8 @@ io.on('connection', (socket) => {
 
       if (levelDetails[0].users.length ==2) {
 
-          x = Math.floor(Math.random()*500) 
-          y = Math.floor(Math.random()*380)
+          x = Math.floor(Math.random()*350) 
+          y = Math.floor(Math.random()*350)
 
           setTimeout(function(){
 
@@ -200,13 +211,13 @@ io.on('connection', (socket) => {
             levelDetails[0].busy = true}, n)
           }
 
-      else {return}
+      else {
+        
+        return}
       
       })
 })
 
-
-// })
 
 /**
  * Listen on provided port, on all network interfaces.
