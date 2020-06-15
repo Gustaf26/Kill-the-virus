@@ -67,35 +67,35 @@ function saveUserTimes(time, level, sockId) {
 
             checkPoints(updatedLevel.users[0].timeResult, updatedLevel.users[1].timeResult, updatedLevel)
 
-             io.to(level).emit('display-results', updatedLevel.users[0].timeResult, updatedLevel.users[1].timeResult, updatedLevel.users[0].name, updatedLevel.users[1].name, updatedLevel.name)
+            io.to(level).emit('display-results', updatedLevel.users[0].timeResult, updatedLevel.users[1].timeResult, updatedLevel.users[0].name, updatedLevel.users[1].name, updatedLevel.name)
 
-             let n = Math.floor(Math.random()*10000)
+            let n = Math.floor(Math.random()*10000)
 
-             x = Math.floor(Math.random()*500) 
-             y = Math.floor(Math.random()*380)
+            x = Math.floor(Math.random()*500) 
+            y = Math.floor(Math.random()*380)
       
-             setTimeout(function(){
+            setTimeout(function(){
       
                io.to(level).emit('start', updatedLevel.users, updatedLevel.name, x, y)}, n)
 
             updatedLevel.busy=false
-            updatedLevel.finnishedPlayers = 0
-          }     
+            updatedLevel.finnishedPlayers = 0}     
 
       else {return}
+
       }
 
 function updateState(time,level,sockId) {
 
   const levelToUpdate = levels.filter(lev=>lev.name == level)
 
-      levelToUpdate[0].users.forEach(us=>{
+  levelToUpdate[0].users.forEach(us=>{
 
-        if (us.userId==sockId) {
+      if (us.userId==sockId) {
 
-            us.timeResult=time
-            us.finnished = true
-        }
+          us.timeResult=time
+          us.finnished = true
+      }
   })
 
   levelToUpdate[0].finnishedPlayers += 1
@@ -163,6 +163,7 @@ io.on('connection', (socket) => {
   socket.on('save-usertime', (time, level, sockId)=>{
 
     saveUserTimes(time, level, sockId)
+
   })
 
   socket.on('start-request', (level, user)=> {
@@ -171,11 +172,11 @@ io.on('connection', (socket) => {
 
     const levelDetails = getLevel(level)
 
-       if (levelDetails[0].busy==true) {return}
+      if (levelDetails[0].busy==true) {return}
        
           // (levelDetails[0].name==level)
 
-        levelDetails[0].users.push({
+      levelDetails[0].users.push({
           
           userId: socket.id,
           name: user,
@@ -183,11 +184,11 @@ io.on('connection', (socket) => {
           finnished: false,
           points: 0})
 
-        socket.join(level)
+      socket.join(level)
 
-        let n = Math.floor(Math.random()*10000)
+      let n = Math.floor(Math.random()*10000)
 
-        if (levelDetails[0].users.length ==2) {
+      if (levelDetails[0].users.length ==2) {
 
           x = Math.floor(Math.random()*500) 
           y = Math.floor(Math.random()*380)
@@ -196,35 +197,13 @@ io.on('connection', (socket) => {
 
             io.to(level).emit('start', levelDetails[0].users, level, x, y) 
             
-            levelDetails[0].busy = true
-          }, n)  }
+            levelDetails[0].busy = true}, n)
+          }
 
-        else {return}
+      else {return}
       
       })
-
-// socket.on('restarting', (level)=> {
-
-//   const levelDetails = getLevel(level)
-
-//   console.log(levelDetails)
-
-//        let n = Math.floor(Math.random()*10000)
-
-//        x = Math.floor(Math.random()*500) 
-//        y = Math.floor(Math.random()*380)
-
-//        setTimeout(function(){
-
-//          io.to(level).emit('start', levelDetails[0].users, levelDetails[0].name, x, y) 
-        
-//         levelDetails[0].busy = true;
-//         levelDetails[0].finnishedPlayers = 0
-//        }, n)
-      
-//       })
 })
-
 
 
 // })

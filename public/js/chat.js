@@ -30,6 +30,7 @@ let currentUsers = []
 let currentLevel = ""
 
 const getLevelList = () => {
+
     console.log("Requesting level list from server...");
 
     socket.emit('get-level-list', (levels)=> {
@@ -51,6 +52,7 @@ const updateLevels= (levels) => {
     
             return
         }
+
         level = loginEl.level.value
     
         titleEl.style.display = "none";
@@ -121,25 +123,16 @@ socket.on('start', (users, level, x, y) =>{
                usersEl.innerHTML ="";
                
         })
-
-        rounds +=1
-
-        if (rounds==10) {
-
-            alert('End of the game')}
-
-        rounds= 0;
-
 })
 
 socket.on('display-results', ( timeOne, timeTwo, nameOne, nameTwo, level)=> {
 
     usersEl.innerHTML = `<div>
     
-                        <p>${nameOne} MADE IT ON ${timeOne} seconds</p>
-                        <p>${nameTwo} MADE IT ON ${timeTwo} seconds</p>
+                            <p>${nameOne} MADE IT ON ${timeOne} seconds</p>
+                            <p>${nameTwo} MADE IT ON ${timeTwo} seconds</p>
                     
-                    </div>`
+                        </div>`
 })
 
 
