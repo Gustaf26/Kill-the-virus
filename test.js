@@ -224,6 +224,9 @@ io.on('connection', (socket) => {
 
   socket.on('leave-room', (level)=>{
 
+    let lev = getLevel(level)
+    lev.busy=false
+    
     socket.leave(level)
     console.log('user has lefte the level:' + level)
 
