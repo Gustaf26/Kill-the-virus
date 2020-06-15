@@ -78,7 +78,7 @@ function saveUserTimes(time, level, sockId) {
             let n = Math.floor(Math.random()*10000)
 
             x = Math.floor(Math.random()*350) 
-            y = Math.floor(Math.random()*350)
+            y = Math.floor(Math.random()*150)
       
             setTimeout(function(){
       
