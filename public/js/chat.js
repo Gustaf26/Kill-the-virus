@@ -24,6 +24,8 @@ const waitingMsgEl = document.querySelector("#waiting")
 
 waitingMsgEl.style.display = 'none'
 
+const audio = new Audio('./assets/music.mp3');
+
 let rounds = 0;
 let level = null;
 let currentUsers = []
@@ -96,7 +98,8 @@ socket.on('start', (users, level, x, y) =>{
         waitingMsgEl.style.display = 'none';
         usersEl.innerHTML = `<p><span></span>${users[0].name} vs. ${users[1].name}<span></span><p>`
 
-        
+        audio.play()
+
         let time =  new Date('dec 31, 2020 00:00:00')
 
         let n = 0
@@ -126,6 +129,8 @@ socket.on('start', (users, level, x, y) =>{
 })
 
 socket.on('display-results', ( timeOne, timeTwo, nameOne, nameTwo, level)=> {
+
+    audio.pause()
 
     usersEl.innerHTML = `<div>
     
