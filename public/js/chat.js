@@ -28,7 +28,7 @@ waitingMsgEl.style.display = 'none'
 
 const resultEl = document.querySelector('#result')
 
-result.style.display = 'none'
+resultEl.style.display = 'none'
 
 const audio = new Audio('./assets/music.mp3');
 
