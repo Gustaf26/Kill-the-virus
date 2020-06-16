@@ -1,32 +1,19 @@
-# node-js-getting-started
+# Kill-the-virus
 
-A barebones Node.js app using [Express 4](http://expressjs.com/).
+A barebones Node.js app using [Express 4](http://expressjs.com/) and Heroku
 
 This application supports the [Getting Started on Heroku with Node.js](https://devcenter.heroku.com/articles/getting-started-with-nodejs) article - check it out.
 
-## Running Locally
-
 Make sure you have [Node.js](http://nodejs.org/) and the [Heroku CLI](https://cli.heroku.com/) installed.
 
-```sh
-$ git clone https://github.com/heroku/node-js-getting-started.git # or clone your own fork
-$ cd node-js-getting-started
-$ npm install
-$ npm start
-```
+## Running in different levels
 
-Your app should now be running on [localhost:5000](http://localhost:5000/).
+The game can be played in three different levels / rooms which are runned using SocketIo / Websockets
 
-## Deploying to Heroku
+## Playing the game
 
-```
-$ heroku create
-$ git push heroku master
-$ heroku open
-```
-or
+To check the game visit [Kill the virus](https://arcane-hamlet-88239.herokuapp.com/)
 
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 ## Documentation
 
