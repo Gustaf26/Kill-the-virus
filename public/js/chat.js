@@ -161,9 +161,9 @@ socket.on('finnished', (resultOne, resultTwo, userOne, userTwo, levelName) => {
 
     else {
         
-         finalResEl.innerHTML+=`<p>${userTwo} is the winner!!</p>` }
+         finalResEl.innerHTML+=`<p>${userTwo} is the winner!!</p>` 
+         appEl.style.backgroundImage ='linear-gradient(to right, darkblue , azure)'}
 
-    console.log(levelName)
     socket.emit('leave-room', levelName);
 
     return
