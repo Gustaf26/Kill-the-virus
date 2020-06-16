@@ -10,6 +10,10 @@ Make sure you have [Node.js](http://nodejs.org/) and the [Heroku CLI](https://cl
 
 The game can be played in three different levels / rooms which are runned using SocketIo / Websockets
 
+Two players can play at different levels at the same time, but though no more than two players are allowed to play in the same level.
+
+The level / room is emptied of players upon disconnection
+
 ## Playing the game
 
 To check the game visit [Kill the virus](https://arcane-hamlet-88239.herokuapp.com/)
