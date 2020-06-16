@@ -168,13 +168,13 @@ io.on('connection', (socket) => {
 
       console.log("Someone left the game :(");
 
-      console.log(socket.id)
-
       levels.forEach(lev=> {
 
         lev.users.forEach(us=>{
 
-          if (us.sockId==socket.id) {
+          if (us.userId==socket.id) {
+
+            console.log(us.userId)
 
             lev.busy=false; 
             lev.users=[]
