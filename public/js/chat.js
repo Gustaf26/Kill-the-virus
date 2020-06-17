@@ -1,5 +1,4 @@
 
-
 const socket = io();
 
 const appEl = document.querySelector("#gamewrapper")
@@ -98,21 +97,29 @@ socket.on('start', (users, level, x, y) =>{
 
         audio.play()
 
-        let time =  new Date('dec 31, 2020 00:00:00')
-
         let n = 0
 
         showVirus(x, y)
 
+        let secs = 0
+        let milli = 0
+        let mins = 0
+
         let timer = setInterval(function () {
 
-            time.setSeconds(n) 
+            if (milli == 99) {
+                secs += 1;
+                milli=0}
 
-            timerEl.innerHTML = time.getSeconds()
+            if (secs == 60) {
+                mins +=1
+                }
 
-            n += 1
+            timerEl.innerHTML = mins + ' : ' + secs + ' : ' + milli
+            
+            milli += 1
 
-        }, 1000)
+        }, 10)
 
         document.querySelector("#virusImg").addEventListener('click', e=> {
 
