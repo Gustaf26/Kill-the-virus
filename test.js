@@ -56,6 +56,7 @@ function handleGetLevelsList(callback) {
 
 function saveUserTimes(secs, milli, level, sockId) {
 
+  console.log(secs, milli)
   const updatedLevel =updateState(secs, milli, level,sockId)
 
      if (updatedLevel.finnishedPlayers === 2) {

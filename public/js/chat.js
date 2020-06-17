@@ -138,10 +138,20 @@ socket.on('display-results', ( timeOne, timeTwo, nameOne, nameTwo, level)=> {
 
     audio.pause()
 
+    if (timeOne.secs == false) {
+
+        timeOne.secs = 0
+    }
+
+    if (timeTwo.secs == false) {
+
+        timeTwo.secs = 0
+    }
+
     usersEl.innerHTML = `<div id="results">
     
-                            <p>${nameOne} - ${timeOne.secs} : ${timeOne.milli} seconds</p>
-                            <p>${nameTwo} - ${timeTwo.secs} : ${timeTwo.milli} seconds</p>
+                            <p>${nameOne} - ${timeOne.secs} ss ${timeOne.milli} mm</p>
+                            <p>${nameTwo} - ${timeTwo.secs} ss ${timeTwo.milli} mm</p>
                     
                         </div>`
 })
