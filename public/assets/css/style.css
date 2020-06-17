@@ -75,9 +75,14 @@ img {width:3rem;
     font-weight: bold;}
 
 #timer {text-align: center;
-    font-size: xx-large;
-    color: cadetblue;
-    visibility:none;
+    background-color: rgb(232, 240, 248);
+    color: darkblue;
+    font-size: 1.5rem;
+    line-height: 1em;
+    text-align: center;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    border:1px dotted grey;
+    border-radius: 8px;
     margin-bottom: 4.5rem;}
 
 #finalresults {font-size: 1.25rem;

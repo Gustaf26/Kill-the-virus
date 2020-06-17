@@ -92,6 +92,7 @@ function showVirus(x, y) {
 socket.on('start', (users, level, x, y) =>{
 
         gameEl.style.display = 'flex';
+        timerEl.style.display = "block"
         waitingMsgEl.style.display = 'none';
         usersEl.innerHTML = `<p><span></span>${users[0].name} vs. ${users[1].name}<span></span><p>`
 
@@ -127,7 +128,7 @@ socket.on('start', (users, level, x, y) =>{
 
             clearInterval(timer)
                            
-               socket.emit('save-usertime', n, level, socket.id);
+               socket.emit('save-usertime', secs, milli, level, socket.id);
                usersEl.innerHTML ="";
                
         })
@@ -139,8 +140,8 @@ socket.on('display-results', ( timeOne, timeTwo, nameOne, nameTwo, level)=> {
 
     usersEl.innerHTML = `<div id="results">
     
-                            <p>${nameOne} : ${timeOne} seconds</p>
-                            <p>${nameTwo} : ${timeTwo} seconds</p>
+                            <p>${nameOne} - ${timeOne.secs} : ${timeOne.milli} seconds</p>
+                            <p>${nameTwo} - ${timeTwo.secs} : ${timeTwo.milli} seconds</p>
                     
                         </div>`
 })
@@ -150,6 +151,7 @@ socket.on('finnished', (resultOne, resultTwo, userOne, userTwo, levelName) => {
     audio.pause()
 
     gameEl.style.display ='none'
+    timerEl.style.display = 'none'
     resultEl.style.display ='flex'
     resultEl.innerHTML = `<div id="finalresults">
     

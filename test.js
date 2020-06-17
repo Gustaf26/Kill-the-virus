@@ -54,13 +54,13 @@ function handleGetLevelsList(callback) {
 }
 
 
-function saveUserTimes(time, level, sockId) {
+function saveUserTimes(secs, milli, level, sockId) {
 
-  const updatedLevel =updateState(time,level,sockId)
+  const updatedLevel =updateState(secs, milli, level,sockId)
 
      if (updatedLevel.finnishedPlayers === 2) {
 
-            const finnished = checkPoints(updatedLevel.users[0].timeResult, updatedLevel.users[1].timeResult, updatedLevel)
+            const finnished = checkPoints(updatedLevel.users[0].timeResult.secs, updatedLevel.users[1].timeResult.secs, updatedLevel)
 
             if (finnished==true) {
 
@@ -94,7 +94,7 @@ function saveUserTimes(time, level, sockId) {
 
       }
 
-function updateState(time,level,sockId) {
+function updateState(secs, milli,level,sockId) {
 
   const levelToUpdate = levels.filter(lev=>lev.name == level)
 
@@ -102,7 +102,7 @@ function updateState(time,level,sockId) {
 
       if (us.userId==sockId) {
 
-          us.timeResult=time
+          us.timeResult= {secs: secs, milli: milli}
           us.finnished = true
       }
   })
@@ -186,9 +186,9 @@ io.on('connection', (socket) => {
 
   socket.on('get-level-list', handleGetLevelsList)
 
-  socket.on('save-usertime', (time, level, sockId)=>{
+  socket.on('save-usertime', (secs, milli, level, sockId)=>{
 
-    saveUserTimes(time, level, sockId)
+    saveUserTimes(secs, milli, level, sockId)
 
   })
 
