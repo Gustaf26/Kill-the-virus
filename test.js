@@ -258,7 +258,7 @@ io.on('connection', (socket) => {
   socket.on('leave-room', (level)=>{
 
     socket.leave(level)
-    console.log('user has lefte the level:' + level)
+    console.log('user has left the level:' + level)
 
   })
 })

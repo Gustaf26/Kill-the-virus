@@ -65,7 +65,7 @@ const updateLevels= (levels) => {
 
         const waitForUsers = setInterval(function(){
 
-              socket.emit('get-level-status', level)
+            socket.emit('get-level-status', level)
 
         }, 3000)
 
@@ -104,34 +104,34 @@ function showVirus(x, y) {
 
 socket.on('start', (users, level, x, y) =>{
 
-        gameEl.style.display = 'flex';
-        timerEl.style.display = "block"
-        waitingMsgEl.style.display = 'none';
-        usersEl.innerHTML = `<p><span></span>${users[0].name} vs. ${users[1].name}<span></span><p>`
+    gameEl.style.display = 'flex';
+    timerEl.style.display = "block"    
+    waitingMsgEl.style.display = 'none';
+    usersEl.innerHTML = `<p><span></span>${users[0].name} vs. ${users[1].name}<span></span><p>`
 
-        audio.play()
+    audio.play()
 
-        let n = 0
+    let n = 0
+    
+    showVirus(x, y)
 
-        showVirus(x, y)
+    let secs = 0
+    let milli = 0
+    let mins = 0
 
-        let secs = 0
-        let milli = 0
-        let mins = 0
+    let timer = setInterval(function () {
 
-        let timer = setInterval(function () {
+        if (milli == 99) {
+            secs += 1;
+            milli=0}
 
-            if (milli == 99) {
-                secs += 1;
-                milli=0}
+        if (secs == 60) {
+            mins +=1
+            secs= 0}
 
-            if (secs == 60) {
-                mins +=1
-                }
-
-            timerEl.innerHTML = mins + ' : ' + secs + ' : ' + milli
+        timerEl.innerHTML = mins + ' : ' + secs + ' : ' + milli
             
-            milli += 1
+        milli += 1
 
         }, 10)
 
@@ -141,8 +141,8 @@ socket.on('start', (users, level, x, y) =>{
 
             clearInterval(timer)
                            
-               socket.emit('save-usertime', secs, milli, level, socket.id);
-               usersEl.innerHTML ="";
+            socket.emit('save-usertime', secs, milli, level, socket.id);
+            usersEl.innerHTML ="";
                
         })
 })
@@ -193,8 +193,8 @@ socket.on('finnished', (resultOne, resultTwo, userOne, userTwo, levelName) => {
 
     else {
         
-         finalResEl.innerHTML+=`<p>${userTwo} is the winner!!</p>` 
-         appEl.style.backgroundImage ='linear-gradient(to right, darkblue , azure)'}
+        finalResEl.innerHTML+=`<p>${userTwo} is the winner!!</p>` 
+        appEl.style.backgroundImage ='linear-gradient(to right, darkblue , azure)'}
 
     socket.emit('leave-room', levelName);
 
