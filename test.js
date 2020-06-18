@@ -151,7 +151,19 @@ function checkPoints(timeOne, timeTwo, level) {
   else if (timeOne == timeTwo) {
 
     users[1].points +=1; 
-    users[0].points +=1
+    users[0].points +=1;
+
+    if (Number(users[1].points) === 5){
+
+      console.log('finnished')
+  
+      return true}
+
+    if (Number(users[0].points) === 5){
+
+        console.log('finnished')
+    
+        return true}
   
   }
 
