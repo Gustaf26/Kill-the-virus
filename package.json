@@ -8,8 +8,8 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon ./test.js",
-    "dev": "SET cross-env DEBUG=virus:* && nodemon ./test.js",
-    "debug": "SET cross-env DEBUG=virus:* && nodemon --inspect ./test.js"
+    "dev": "cross-env DEBUG=virus:* nodemon ./test.js",
+    "debug": "cross-env DEBUG=09-simple-chat:*,socket.io:client,socket.io:server nodemon --inspect ./test.js"
   },
   "dependencies": {
     "cross-env": "^7.0.2",
