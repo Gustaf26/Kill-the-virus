@@ -62,9 +62,22 @@ const updateLevels= (levels) => {
         titleEl.style.display = "none";
     
         waitingMsgEl.style.display = 'flex';
-    
-        socket.emit('start-request', level, nickEl.value);
-    
+
+        const waitForUsers = setInterval(function(){
+
+              socket.emit('get-level-status', level)
+
+        }, 3000)
+
+        socket.on('level-status-free', level=>{
+
+            console.log('HI')
+
+            clearInterval(waitForUsers)
+
+            socket.emit('start-request', level, nickEl.value)
+        })
+
     });
 
 }

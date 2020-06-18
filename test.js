@@ -65,7 +65,9 @@ function saveUserTimes(secs, milli, level, sockId) {
 
             if (finnished==true) {
 
-              io.to(level).emit('finnished', updatedLevel.users[0].points, updatedLevel.users[1].points, updatedLevel.users[0].name, updatedLevel.users[1].name, updatedLevel.name)
+              io.to(updatedLevel.users[0].userId).emit('finnished', updatedLevel.users[0].points, updatedLevel.users[1].points, updatedLevel.users[0].name, updatedLevel.users[1].name, updatedLevel.name)
+
+              io.to(updatedLevel.users[1].userId).emit('finnished', updatedLevel.users[0].points, updatedLevel.users[1].points, updatedLevel.users[0].name, updatedLevel.users[1].name, updatedLevel.name)
 
               updatedLevel.busy=false
               updatedLevel.finnishedPlayers = 0
@@ -88,7 +90,6 @@ function saveUserTimes(secs, milli, level, sockId) {
                io.to(level).emit('start', updatedLevel.users, updatedLevel.name, x, y)}
                , n)
 
-            updatedLevel.busy=false
             updatedLevel.finnishedPlayers = 0}     
 
       else {return}
@@ -170,7 +171,6 @@ function checkPoints(timeOne, timeTwo, level) {
   return false
 }
 
-
 // Events on connection
 
 io.on('connection', (socket) => {
@@ -197,6 +197,20 @@ io.on('connection', (socket) => {
 
     });
 
+  socket.on('get-level-status', level=>{
+
+    const lev = levels.filter(lev=>lev.name === level)
+
+    if(lev[0].busy===false) {
+      
+        io.to(socket.id).emit('level-status-free', level)}
+
+    else {
+        
+        return }
+
+  })
+
   socket.on('get-level-list', handleGetLevelsList)
 
   socket.on('save-usertime', (secs, milli, level, sockId)=>{
@@ -211,46 +225,37 @@ io.on('connection', (socket) => {
 
     const levelDetails = getLevel(level)
 
-      if (levelDetails[0].busy===true) {
-        
-        return}
-
       levelDetails[0].users.push({
           
-          userId: socket.id,
-          name: user,
-          timeResult:"",
-          finnished: false,
-          points: 0})
+              userId: socket.id,
+              name: user,
+              timeResult:"",
+              finnished: false,
+              points: 0})
 
-      socket.join(level)
+          socket.join(level)
 
-      let n = Math.floor(Math.random()*10000)
+          let n = Math.floor(Math.random()*10000)
 
-      if (levelDetails[0].users.length ==2) {
+          if (levelDetails[0].users.length ==2) {
 
-          x = Math.floor(Math.random()*450) 
-          y = Math.floor(Math.random()*250)
+              x = Math.floor(Math.random()*450) 
+              y = Math.floor(Math.random()*250)
 
-          console.log(y)
+              console.log(y)
 
-          setTimeout(function(){
+              setTimeout(function(){
 
-            io.to(level).emit('start', levelDetails[0].users, level, x, y) 
-            
-            levelDetails[0].busy = true}, n)
-          }
+                io.to(level).emit('start', levelDetails[0].users, level, x, y) 
+                
+                levelDetails[0].busy = true}, n)}
 
-      else {
-        
-        return}
-      
+        else {return}
+
       })
 
-  socket.on('leave-room', (level)=>{
 
-    let lev = getLevel(level)
-    lev.busy=false
+  socket.on('leave-room', (level)=>{
 
     socket.leave(level)
     console.log('user has lefte the level:' + level)
