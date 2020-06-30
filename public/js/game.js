@@ -73,6 +73,9 @@ const updateLevels= (levels) => {
 
             clearInterval(waitForUsers)
 
+            waitingMsgEl.innerText='WAITING FOR YOUR OPPONENT'
+            waitingMsgEl.style.display='flex'
+
             socket.emit('start-request', level, nickEl.value)
         })
 
@@ -99,6 +102,8 @@ function showVirus(x, y) {
   }
 
 socket.on('ready', ()=>{
+
+    waitingMsgEl.innerText='GET READY!'
 
     if (waitingMsgEl.style.display === "none") {
         waitingMsgEl.style.display = "block";
