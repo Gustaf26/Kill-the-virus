@@ -90,12 +90,23 @@ img {width:3rem;
     border-radius: 8px;
     margin-bottom: 4.5rem;}
 
-#finalresults {font-size: 1.25rem;
+#finalresults, #finalresultsTwo, #finalresultsThree {display:flex;
+    flex-direction: column;
+    align-items:center;
+    font-size: 1.25rem;
     list-style-type: none;
-    color: rgb(60, 60, 143);
+    color: darkblue;
     font-weight: bold;}
 
-.winner {color: rgb(1, 1, 110);
+#play-again{padding:1rem;
+    background-color: rgb(35, 136, 119);
+    color: white;
+    font-weight: bold;
+    border:1px dotted white;
+    border-radius: 5px;
+    margin-bottom: 1rem;}
+
+.winner {color: rgb(35, 136, 119);
     opacity: 1;}
 
 footer{position:fixed;

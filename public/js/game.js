@@ -61,6 +61,10 @@ const updateLevels= (levels) => {
     
         titleEl.style.display = "none";
 
+        waitingMsgEl.innerText='WAITING FOR YOUR OPPONENT'
+            
+        waitingMsgEl.style.display='flex'
+
         const waitForUsers = setInterval(function(){
 
             socket.emit('get-level-status', level)
@@ -73,15 +77,37 @@ const updateLevels= (levels) => {
 
             clearInterval(waitForUsers)
 
-            waitingMsgEl.innerText='WAITING FOR YOUR OPPONENT'
-            waitingMsgEl.style.display='flex'
-
             socket.emit('start-request', level, nickEl.value)
-        })
+        })});}
 
-    });
 
-}
+const requestStart = () =>{
+
+    appEl.style.backgroundImage ='none'
+    
+    appEl.style.opacity ='1'
+
+    resultEl.style.display='none'
+
+    level = loginEl.level.value
+    
+    titleEl.style.display = "none";
+
+    waitingMsgEl.innerText='WAITING FOR YOUR OPPONENT'
+    
+    waitingMsgEl.style.display='flex'
+
+    socket.emit('get-level-status', level)
+    
+    socket.on('level-status-free', level=>{
+
+        console.log('HI')
+
+        clearInterval(waitForUsers)
+
+        console.log(nickEl.value)
+
+        socket.emit('start-request', level, nickEl.value)})}
 
 
 function showVirus(x, y) {
@@ -98,19 +124,18 @@ function showVirus(x, y) {
   
     boardEl.append(virusImage)
 
-    return
-  }
+    return}
 
 socket.on('ready', ()=>{
 
     waitingMsgEl.innerText='GET READY!'
 
     if (waitingMsgEl.style.display === "none") {
-        waitingMsgEl.style.display = "block";
-      } else {
-        waitingMsgEl.style.display = "none";
-      }    
-})
+
+        waitingMsgEl.style.display = "block";}
+
+    else {waitingMsgEl.style.display = "none";}})
+
 
 socket.on('start', (users, level, x, y) =>{
 
@@ -154,8 +179,7 @@ socket.on('start', (users, level, x, y) =>{
             socket.emit('save-usertime', secs, milli, level, socket.id);
             usersEl.innerHTML ="";
                
-        })
-})
+        })})
 
 socket.on('display-results', ( timeOne, timeTwo, nameOne, nameTwo, level)=> {
 
@@ -163,21 +187,18 @@ socket.on('display-results', ( timeOne, timeTwo, nameOne, nameTwo, level)=> {
 
     if (timeOne.secs == false) {
 
-        timeOne.secs = 0
-    }
+        timeOne.secs = 0}
 
     if (timeTwo.secs == false) {
 
-        timeTwo.secs = 0
-    }
+        timeTwo.secs = 0}
 
     usersEl.innerHTML = `<div id="results">
     
                             <p>${nameOne} - ${timeOne.secs} ss ${timeOne.milli} mm</p>
                             <p>${nameTwo} - ${timeTwo.secs} ss ${timeTwo.milli} mm</p>
                     
-                        </div>`
-})
+                        </div>`})
 
 socket.on('finnished', (resultOne, resultTwo, userOne, userTwo, levelName) => {
 
@@ -190,25 +211,44 @@ socket.on('finnished', (resultOne, resultTwo, userOne, userTwo, levelName) => {
     
                             <p>${userOne} : ${resultOne} points</p>
                             <p>${userTwo} : ${resultTwo} points</p>
-                        
+
                         </div>`
     
     const finalResEl = document.querySelector("#finalresults")
 
     if (resultOne>resultTwo) {
 
-        finalResEl.innerHTML +=`<p class="winner">${userOne} is the winner!!</p>`
+        finalResEl.innerHTML +=`<div id="finalresultsTwo">
+
+                            <p><span class="winner">${userOne}</span> is the winner!!</p>
+                            <button id="play-again">PLAY AGAIN</button>
+        
+                            </div>`
+
         appEl.style.backgroundImage ='linear-gradient(to right,  rgb(176, 212, 212) , azure)'
         appEl.style.opacity ='0.8'
     }
 
     else {
         
-        finalResEl.innerHTML+=`<p class="winner">${userTwo} is the winner!!</p>` 
+        finalResEl.innerHTML+=`<div id="finalresultsThree">
+        
+                            <p><span class="winner">${userTwo}</span> is the winner!!</p>
+                            <button id="play-again">PLAY AGAIN</button>
+                            
+                            </div>` 
+
         appEl.style.backgroundImage ='linear-gradient(to right,  rgb(176, 212, 212) , azure)'}
         appEl.style.opacity ='0.8'
 
     socket.emit('leave-room', levelName);
+
+    document.querySelector('#play-again').addEventListener('click', e=>{
+
+        e.preventDefault();
+
+        requestStart();
+    })
 
     return
 })

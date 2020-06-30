@@ -235,9 +235,11 @@ io.on('connection', (socket) => {
 
           socket.join(level)
 
+          console.log(levelDetails[0].users)
+
           if (levelDetails[0].users.length ==2) {
 
-            let n = Math.floor((Math.random()*10000)+5)
+            let n = Math.floor((Math.random()*10000)+5000)
 
               x = Math.floor(Math.random()*450) 
               y = Math.floor(Math.random()*250)
@@ -271,6 +273,7 @@ io.on('connection', (socket) => {
   socket.on('leave-room', (level)=>{
 
     socket.leave(level)
+
     console.log('user has left the level:' + level)
 
   })
