@@ -187,14 +187,16 @@ socket.on('finnished', (resultOne, resultTwo, userOne, userTwo, levelName) => {
 
     if (resultOne>resultTwo) {
 
-        finalResEl.innerHTML +=`<p>${userOne} is the winner!!</p>`
-        appEl.style.backgroundImage ='linear-gradient(to right, darkblue , azure)'
+        finalResEl.innerHTML +=`<p class="winner">${userOne} is the winner!!</p>`
+        appEl.style.backgroundImage ='linear-gradient(to right,  rgb(176, 212, 212) , azure)'
+        appEl.style.opacity ='0.8'
     }
 
     else {
         
-        finalResEl.innerHTML+=`<p>${userTwo} is the winner!!</p>` 
-        appEl.style.backgroundImage ='linear-gradient(to right, darkblue , azure)'}
+        finalResEl.innerHTML+=`<p class="winner">${userTwo} is the winner!!</p>` 
+        appEl.style.backgroundImage ='linear-gradient(to right,  rgb(176, 212, 212) , azure)'}
+        appEl.style.opacity ='0.8'
 
     socket.emit('leave-room', levelName);
 

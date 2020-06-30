@@ -1,4 +1,7 @@
-body {background-color: azure;}
+body {background-image: url('../corona-frontside.jpg');
+    background-size: 1000px auto;
+    background-position: center 0px;
+    background-repeat: no-repeat;}
 
 #app {
     background-color: aliceblue;
@@ -40,7 +43,7 @@ img {width:3rem;
     min-width: 75vw;
     border: 1px dotted grey;
     background-color: rgb(239, 243, 243);
-    
+    opacity:0.8;
 }
 
 #gametitle{margin:1rem auto 1rem auto;
@@ -90,12 +93,17 @@ img {width:3rem;
     color: darkblue;
     font-weight: bold;}
 
+.winner {color: rgb(1, 1, 110);
+    opacity: 1;}
+
 footer{position:fixed;
+    line-height: 2.5rem;
     width:100%;
     bottom: 0;
     left:0;
     border: darkblue;
-    background-color: rgb(213, 252, 252);
+    background-color: rgb(176, 212, 212);
     padding: 1rem;
     text-align: center;
-    color: darkblue;}
+    color: darkblue;
+    opacity: 0.8;}
