@@ -235,7 +235,7 @@ io.on('connection', (socket) => {
 
           socket.join(level)
 
-          let n = Math.floor(Math.random()*10000)
+          let n = Math.floor((Math.random()*10000)+5)
 
           if (levelDetails[0].users.length ==2) {
 
