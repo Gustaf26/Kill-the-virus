@@ -242,7 +242,20 @@ io.on('connection', (socket) => {
               x = Math.floor(Math.random()*450) 
               y = Math.floor(Math.random()*250)
 
-              console.log(y)
+              let secs = 0
+
+              const ready = setInterval(function(){
+
+                io.to(level).emit('ready');
+
+                if (secs > n) {stop()}
+
+                  secs +=500
+                  console.log(n, secs)
+
+              },500)
+
+              function stop () {clearInterval(ready)}
 
               setTimeout(function(){
 

@@ -60,8 +60,6 @@ const updateLevels= (levels) => {
         level = loginEl.level.value
     
         titleEl.style.display = "none";
-    
-        waitingMsgEl.style.display = 'flex';
 
         const waitForUsers = setInterval(function(){
 
@@ -100,7 +98,14 @@ function showVirus(x, y) {
     return
   }
 
+socket.on('ready', ()=>{
 
+    if (waitingMsgEl.style.display === "none") {
+        waitingMsgEl.style.display = "block";
+      } else {
+        waitingMsgEl.style.display = "none";
+      }    
+})
 
 socket.on('start', (users, level, x, y) =>{
 

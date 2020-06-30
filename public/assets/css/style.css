@@ -66,6 +66,8 @@ img {width:3rem;
     color: darkblue;
     font-weight: bold;}
 
+.ready {display:flex;}
+
 #second-wrapper {display:flex;
     flex-direction: column;
     align-items: center;
@@ -90,7 +92,7 @@ img {width:3rem;
 
 #finalresults {font-size: 1.25rem;
     list-style-type: none;
-    color: darkblue;
+    color: rgb(60, 60, 143);
     font-weight: bold;}
 
 .winner {color: rgb(1, 1, 110);
