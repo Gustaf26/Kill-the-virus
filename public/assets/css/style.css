@@ -46,6 +46,8 @@ img {width:3rem;
     opacity:0.8;
 }
 
+div #game:hover{cursor: url("https://downloads.totallyfreecursors.com/cursor_files/arizonacardinals.cur"), url("https://downloads.totallyfreecursors.com/thumbnails/ArizonaCardinals.gif"), auto;}
+
 #gametitle{margin:1rem auto 1rem auto;
     color: darkblue;}
 
@@ -120,3 +122,5 @@ footer{position:fixed;
     text-align: center;
     color: darkblue;
     opacity: 0.8;}
+
+footer p {margin:0;}

@@ -1,6 +1,8 @@
 
 const socket = io();
 
+const bodyEl = document.querySelector('#body')
+
 const appEl = document.querySelector("#gamewrapper")
 
 const nickEl = document.querySelector('#nickname');
@@ -84,7 +86,7 @@ const updateLevels= (levels) => {
 const requestStart = () =>{
 
     appEl.style.backgroundImage ='none'
-    
+
     appEl.style.opacity ='1'
 
     resultEl.style.display='none'
@@ -109,12 +111,25 @@ const requestStart = () =>{
 
         socket.emit('start-request', level, nickEl.value)})}
 
+function changeBackground () {
+
+    let n = Math.floor(Math.random()*9)
+
+    let pics= ['assets/worldOne.jpg', 'assets/worldTwo.jpg', 'assets/worldThree.jpg', 'assets/worldFour.jpg', 'assets/world5.jpg', 'assets/world6.jpg', 'assets/world7.jpg', 'assets/world8.jpg', 'assets/world9.jpg', 'assets/world10.jpg']
+
+    bodyEl.style.backgroundImage = `url('${pics[n]}')`
+
+    return
+}
+
 
 function showVirus(x, y) {
 
     let virusImage = document.createElement(`img`)
     virusImage.src = "assets/virus.png"
     virusImage.id = "virusImg"
+
+    changeBackground()
 
     boardEl.style.cssText = "position:relative";
     virusImage.style.cssText = "position:absolute";
