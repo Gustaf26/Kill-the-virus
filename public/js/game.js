@@ -31,7 +31,11 @@ const resultEl = document.querySelector('#result')
 
 resultEl.style.display = 'none'
 
-const audio = new Audio('./assets/music.mp3');
+const audioOne = new Audio('./assets/music.mp3');
+
+const gameOverAudio = new Audio('./assets/game-over.mp3');
+
+const explosionSound = new Audio('./assets/explosion.mp3');
 
 let level = null;
 
@@ -159,7 +163,7 @@ socket.on('start', (users, level, x, y) =>{
     waitingMsgEl.style.display = 'none';
     usersEl.innerHTML = `<p><span></span>${users[0].name} vs. ${users[1].name}<span></span><p>`
 
-    audio.play()
+    audioOne.play()
 
     let n = 0
     
@@ -189,6 +193,10 @@ socket.on('start', (users, level, x, y) =>{
 
             document.querySelector("#virusImg").remove()
 
+            explosionSound.play()
+
+            explosionSound.volume=0.7;
+
             clearInterval(timer)
                            
             socket.emit('save-usertime', secs, milli, level, socket.id);
@@ -198,7 +206,7 @@ socket.on('start', (users, level, x, y) =>{
 
 socket.on('display-results', ( timeOne, timeTwo, nameOne, nameTwo, level)=> {
 
-    audio.pause()
+    audioOne.pause()
 
     if (timeOne.secs == false) {
 
@@ -217,7 +225,9 @@ socket.on('display-results', ( timeOne, timeTwo, nameOne, nameTwo, level)=> {
 
 socket.on('finnished', (resultOne, resultTwo, userOne, userTwo, levelName) => {
 
-    audio.pause()
+    audioOne.pause()
+    gameOverAudio.play()
+    gameOverAudio.volume = 0.3;
 
     gameEl.style.display ='none'
     timerEl.style.display = 'none'
@@ -241,7 +251,7 @@ socket.on('finnished', (resultOne, resultTwo, userOne, userTwo, levelName) => {
                             </div>`
 
         appEl.style.backgroundImage ='linear-gradient(to right,  rgb(176, 212, 212) , azure)'
-        appEl.style.opacity ='0.8'
+        appEl.style.opacity ='0.9'
     }
 
     else {
