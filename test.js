@@ -269,6 +269,20 @@ io.on('connection', (socket) => {
 
       })
 
+  socket.on('getRandomCoordinates', (level)=>{
+
+        x = Math.floor(Math.random()*450) 
+        y = Math.floor(Math.random()*250)
+
+        io.to(socket.id).emit('randomizedCoordinates', (x,y))
+  })
+
+  socket.on('stopCoordsIntervall', (sockId)=>{
+
+    console.log('HI')
+
+      io.to(sockId).emit('clearCoordsInterval')
+  })
 
   socket.on('leave-room', (level)=>{
 

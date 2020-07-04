@@ -145,6 +145,41 @@ function showVirus(x, y) {
 
     return}
 
+function showVirusMedium(x,y) {
+
+    if (document.querySelector('#virusImg')) {
+
+        document.querySelector('#virusImg').remove()
+    }
+
+    let virusImage = document.createElement(`img`)
+    virusImage.src = "assets/virus.png"
+    virusImage.id = "virusImg"
+
+    boardEl.style.cssText = "position:relative";
+    virusImage.style.cssText = "position:absolute";
+  
+    virusImage.style.left = x + "px";
+    virusImage.style.top =  y +"px";
+  
+    boardEl.append(virusImage)
+
+
+    document.querySelector("#virusImg").addEventListener('click', e=> {
+
+        document.querySelector("#virusImg").remove()
+
+        socket.emit('stopCoordsIntervall', socket.id)
+
+        explosionSound.play()
+
+        explosionSound.volume=0.7;})
+
+    return
+
+}
+
+
 socket.on('ready', ()=>{
 
     waitingMsgEl.innerText='GET READY!'
@@ -166,8 +201,60 @@ socket.on('start', (users, level, x, y) =>{
     audioOne.play()
 
     let n = 0
+
+    if (level=="medium") {
+
+        changeBackground()
+        
+        let secs = 0
+        let milli = 0
+        let mins = 0
+                    
+        let timer = setInterval(function () {
+        
+            if (milli == 99) {
+                secs += 1;
+                milli=0}
+        
+            if (secs == 60) {
+                mins +=1
+                secs= 0}
+        
+        timerEl.innerHTML = mins + ' : ' + secs + ' : ' + milli
+                    
+        milli += 1
+        
+        }, 10)
+
+        //Emitting and getting coordinates and starting interval
+
+        const randomCoordsInterval = setInterval(function(){
+
+            socket.emit('getRandomCoordinates', level)
+
+            socket.on('randomizedCoordinates', (x,y) =>{
+
+                showVirusMedium(x,y)})}, 1000)
+
+        // Closing interval after klicking on virus
+
+        socket.on('clearCoordsInterval', ()=> {
     
-    showVirus(x, y)
+            console.log('interval cleared')
+
+            clearInterval(timer)
+    
+            clearInterval(randomCoordsInterval)
+    
+            socket.emit('save-usertime', secs, milli, level, socket.id);
+        
+            usersEl.innerHTML ="";})
+
+        }
+    
+    else {
+        
+        showVirus(x, y)
 
     let secs = 0
     let milli = 0
@@ -200,9 +287,8 @@ socket.on('start', (users, level, x, y) =>{
             clearInterval(timer)
                            
             socket.emit('save-usertime', secs, milli, level, socket.id);
-            usersEl.innerHTML ="";
-               
-        })})
+            usersEl.innerHTML ="";})}})
+
 
 socket.on('display-results', ( timeOne, timeTwo, nameOne, nameTwo, level)=> {
 
