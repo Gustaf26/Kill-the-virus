@@ -279,10 +279,21 @@ io.on('connection', (socket) => {
 
   socket.on('stopCoordsIntervall', (sockId)=>{
 
-    console.log('HI')
+    console.log('One virus hit')
 
-      io.to(sockId).emit('clearCoordsInterval')
-  })
+    levels.forEach(lev=> {
+
+      lev.users.forEach(us=>{
+
+        if (us.userId==sockId){
+
+          console.log(lev.name)
+
+          io.to(sockId).emit('clearCoordsInterval', lev.name)}})})
+
+        })
+        
+        
 
   socket.on('leave-room', (level)=>{
 
