@@ -289,7 +289,7 @@ io.on('connection', (socket) => {
 
           console.log(lev.name)
 
-          io.to(sockId).emit('clearCoordsInterval', lev.name)}})})
+          io.to(sockId).emit('clearCoordsInterval', (lev.name))}})})
 
         })
         

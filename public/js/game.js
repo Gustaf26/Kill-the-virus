@@ -224,18 +224,13 @@ function startTimer (start) {
     timerEl.innerHTML = mins + ' : ' + secs + ' : ' + milli
                 
     milli += 1
-    
-    }, 10)
 
     if (start===false) {
 
-        const time = {mins,secs, milli}
-
         clearInterval(timer)
 
-    return  time
+    }}, 10)
 
-    }
 }
 
 
@@ -310,11 +305,16 @@ socket.on('clearCoordsInterval', level=> {
 
     showVirusMedium(false)
 
-    const getTime = startTimer(false)
+    let time = timerEl.innerHTML.split(":") 
 
-    console.log(getTime)
+    let secs = Number(time[1].trim())
+    let milli = Number(time[2].trim())
 
-    socket.emit('save-usertime', getTime.time.secs, getTime.time.milli, level, socket.id);
+    console.log(secs, milli)
+
+    startTimer(false)
+
+    socket.emit('save-usertime', secs, milli, level, socket.id);
 
     usersEl.innerHTML ="";})
 
