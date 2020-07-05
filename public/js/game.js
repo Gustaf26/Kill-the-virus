@@ -169,7 +169,7 @@ function showVirusMedium() {
 
 }
 
-socket.on('randomizedCoordinates', (x,y)=>{
+socket.on('randomizedCoordinates', x, y =>{
 
     if (document.querySelector('#virusImg')) {
 

@@ -274,7 +274,7 @@ io.on('connection', (socket) => {
         x = Math.floor(Math.random()*450) 
         y = Math.floor(Math.random()*250)
 
-        io.to(socket.id).emit('randomizedCoordinates', (x,y))
+        io.to(socket.id).emit('randomizedCoordinates', x,y)
   })
 
   socket.on('stopCoordsIntervall', (sockId)=>{
