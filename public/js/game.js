@@ -40,6 +40,7 @@ const explosionSound = new Audio('./assets/explosion.mp3');
 let level = null;
 let setTimer = false;
 let started = false;
+let indexInterval = 0
 
 const getLevelList = () => {
 
@@ -148,9 +149,7 @@ function showVirus(x, y) {
 
     return}
 
-function showVirusMedium() {
-
-     started = true
+function showVirusHarder() {
 
     const showInterval = setInterval(function(){
 
@@ -163,13 +162,13 @@ function showVirusMedium() {
             return
         }
 
-    }, 1000)
+    }, indexInterval)
 
     return
 
 }
 
-socket.on('randomizedCoordinates', x, y =>{
+socket.on('randomizedCoordinates', ({x, y}) =>{
 
     if (document.querySelector('#virusImg')) {
 
@@ -184,7 +183,7 @@ socket.on('randomizedCoordinates', x, y =>{
     virusImage.style.cssText = "position:absolute";
   
     virusImage.style.left = x + "px";
-    virusImage.style.top =  y +"px";
+    virusImage.style.top =  y + "px";
   
     boardEl.append(virusImage)    
 
@@ -199,6 +198,7 @@ socket.on('randomizedCoordinates', x, y =>{
         explosionSound.volume=0.7;
     
     return })})
+
 
 socket.on('ready', ()=>{
 
@@ -256,7 +256,46 @@ socket.on('start', (users, level, x, y) =>{
 
         started = true
 
-        showVirusMedium()}
+        indexInterval = 1000
+
+        showVirusHarder()}
+
+    else if (level=="difficult") {
+
+            changeBackground()
+            
+            let secs = 0
+            let milli = 0
+            let mins = 0
+    
+            setTimer=true
+                            
+            let timer = setInterval(function () {
+                
+                if (milli == 99) {
+                        secs += 1;
+                        milli=0}
+                    
+                if (secs == 60) {
+                        mins +=1
+                        secs= 0}
+             
+                timerEl.innerHTML = mins + ' : ' + secs + ' : ' + milli
+                milli += 1
+    
+                if (setTimer===false) {
+    
+                    clearInterval(timer)
+    
+                }}, 10)
+    
+            //Emitting and getting coordinates function, starting game
+    
+            started = true
+
+            indexInterval = 500
+    
+            showVirusHarder()}
     
     else {
         
@@ -301,8 +340,6 @@ socket.on('start', (users, level, x, y) =>{
 socket.on('clearCoordsInterval', level=> {
     
     console.log('interval cleared')
-
-    showVirusMedium(false)
 
     let time = timerEl.innerHTML.split(":") 
 
