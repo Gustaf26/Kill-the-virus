@@ -38,6 +38,8 @@ const gameOverAudio = new Audio('./assets/game-over.mp3');
 const explosionSound = new Audio('./assets/explosion.mp3');
 
 let level = null;
+let setTimer = false;
+let started = false;
 
 const getLevelList = () => {
 
@@ -115,6 +117,7 @@ const requestStart = () =>{
 
         socket.emit('start-request', level, nickEl.value)})}
 
+
 function changeBackground () {
 
     let n = Math.floor(Math.random()*9)
@@ -145,20 +148,23 @@ function showVirus(x, y) {
 
     return}
 
-function showVirusMedium(started) {
+function showVirusMedium() {
+
+     started = true
 
     const showInterval = setInterval(function(){
 
         socket.emit('getRandomCoordinates', level)
 
+        if (started===false) {
+
+            clearInterval(showInterval)
+    
+            return
+        }
+
     }, 1000)
 
-    if (started==false) {
-
-        clearInterval(showInterval)
-
-        return
-    }
     return
 
 }
@@ -205,35 +211,6 @@ socket.on('ready', ()=>{
     else {waitingMsgEl.style.display = "none";}})
 
 
-function startTimer (start) {
-
-    let secs = 0
-    let milli = 0
-    let mins = 0
-                
-    let timer = setInterval(function () {
-    
-        if (milli == 99) {
-            secs += 1;
-            milli=0}
-    
-        if (secs == 60) {
-            mins +=1
-            secs= 0}
-    
-    timerEl.innerHTML = mins + ' : ' + secs + ' : ' + milli
-                
-    milli += 1
-
-    if (start===false) {
-
-        clearInterval(timer)
-
-    }}, 10)
-
-}
-
-
 socket.on('start', (users, level, x, y) =>{
 
     gameEl.style.display = 'flex';
@@ -249,15 +226,37 @@ socket.on('start', (users, level, x, y) =>{
 
         changeBackground()
 
-        let start = true
         
-        startTimer(start)
+        let secs = 0
+        let milli = 0
+        let mins = 0
 
-        //Emitting and getting coordinates function
+        setTimer=true
+                        
+        let timer = setInterval(function () {
+            
+            if (milli == 99) {
+                    secs += 1;
+                    milli=0}
+                
+            if (secs == 60) {
+                    mins +=1
+                    secs= 0}
+         
+            timerEl.innerHTML = mins + ' : ' + secs + ' : ' + milli
+            milli += 1
 
-        let started = true
+            if (setTimer===false) {
 
-        showVirusMedium(started)}
+                clearInterval(timer)
+
+            }}, 10)
+
+        //Emitting and getting coordinates function, starting game
+
+        started = true
+
+        showVirusMedium()}
     
     else {
         
@@ -312,7 +311,8 @@ socket.on('clearCoordsInterval', level=> {
 
     console.log(secs, milli)
 
-    startTimer(false)
+    setTimer = false
+    started = false
 
     socket.emit('save-usertime', secs, milli, level, socket.id);
 
