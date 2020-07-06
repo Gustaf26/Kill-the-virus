@@ -36,6 +36,8 @@ img {width:3rem;
     border-radius: 8px;
     }
 
+#users li {padding-bottom: 0.75rem;}
+
 #users p {margin: 0}
 
 #game {visibility:none;

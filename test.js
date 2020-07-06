@@ -65,9 +65,9 @@ function saveUserTimes(secs, milli, level, sockId) {
 
             if (finnished==true) {
 
-              io.to(updatedLevel.users[0].userId).emit('finnished', updatedLevel.users[0].points, updatedLevel.users[1].points, updatedLevel.users[0].name, updatedLevel.users[1].name, updatedLevel.name)
+              io.to(updatedLevel.users[0].userId).emit('finnished', updatedLevel.users[0].points, updatedLevel.users[1].points, updatedLevel.users[0].name, updatedLevel.users[1].name, updatedLevel.name, rounds)
 
-              io.to(updatedLevel.users[1].userId).emit('finnished', updatedLevel.users[0].points, updatedLevel.users[1].points, updatedLevel.users[0].name, updatedLevel.users[1].name, updatedLevel.name)
+              io.to(updatedLevel.users[1].userId).emit('finnished', updatedLevel.users[0].points, updatedLevel.users[1].points, updatedLevel.users[0].name, updatedLevel.users[1].name, updatedLevel.name, rounds)
 
               updatedLevel.busy=false
               updatedLevel.finnishedPlayers = 0

@@ -216,8 +216,8 @@ socket.on('start', (users, level, x, y, rounds) =>{
     gameEl.style.display = 'flex';
     timerEl.style.display = "block"    
     waitingMsgEl.style.display = 'none';
-    usersEl.innerHTML = `<div>Round ${rounds}</div>
-                        <p><span>${users[0].name} vs. ${users[1].name}<span><p>`
+    usersEl.innerHTML = `<li>Round ${rounds}</li>
+                        <li><span>${users[0].name} vs. ${users[1].name}<span></li>`
 
     audioOne.play()
 
@@ -376,7 +376,7 @@ socket.on('display-results', ( timeOne, timeTwo, nameOne, nameTwo, level)=> {
                     
                         </div>`})
 
-socket.on('finnished', (resultOne, resultTwo, userOne, userTwo, levelName) => {
+socket.on('finnished', (resultOne, resultTwo, userOne, userTwo, levelName, rounds) => {
 
     audioOne.pause()
     gameOverAudio.play()
@@ -386,7 +386,7 @@ socket.on('finnished', (resultOne, resultTwo, userOne, userTwo, levelName) => {
     timerEl.style.display = 'none'
     resultEl.style.display ='flex'
     resultEl.innerHTML = `<div id="finalresults">
-    
+                            <p>After ${rounds} rounds...</p>
                             <p>${userOne} : ${resultOne} points</p>
                             <p>${userTwo} : ${resultTwo} points</p>
 
