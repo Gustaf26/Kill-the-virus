@@ -23,7 +23,7 @@ app.set('port', port);
 const server = http.createServer(app);
 const io = SocketIO(server);
 
-let updatedUsers = []
+let rounds = 0
 
 let levels = [
 
@@ -72,6 +72,7 @@ function saveUserTimes(secs, milli, level, sockId) {
               updatedLevel.busy=false
               updatedLevel.finnishedPlayers = 0
               updatedLevel.users=[]
+              rounds =0;
 
               return
             }
@@ -84,10 +85,12 @@ function saveUserTimes(secs, milli, level, sockId) {
             y = Math.floor(Math.random()*250)
 
             console.log(y)
+
+            rounds +=1
       
             setTimeout(function(){
       
-               io.to(level).emit('start', updatedLevel.users, updatedLevel.name, x, y)}
+              io.to(level).emit('start', updatedLevel.users, updatedLevel.name, x, y, rounds)}
                , n)
 
             updatedLevel.finnishedPlayers = 0}     
@@ -261,7 +264,9 @@ io.on('connection', (socket) => {
 
               setTimeout(function(){
 
-                io.to(level).emit('start', levelDetails[0].users, level, x, y) 
+                rounds +=1
+
+                io.to(level).emit('start', levelDetails[0].users, level, x, y, rounds) 
                 
                 levelDetails[0].busy = true}, n)}
 

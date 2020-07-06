@@ -211,12 +211,13 @@ socket.on('ready', ()=>{
     else {waitingMsgEl.style.display = "none";}})
 
 
-socket.on('start', (users, level, x, y) =>{
+socket.on('start', (users, level, x, y, rounds) =>{
 
     gameEl.style.display = 'flex';
     timerEl.style.display = "block"    
     waitingMsgEl.style.display = 'none';
-    usersEl.innerHTML = `<p><span></span>${users[0].name} vs. ${users[1].name}<span></span><p>`
+    usersEl.innerHTML = `<div>Round ${rounds}</div>
+                        <p><span>${users[0].name} vs. ${users[1].name}<span><p>`
 
     audioOne.play()
 
@@ -262,62 +263,62 @@ socket.on('start', (users, level, x, y) =>{
 
     else if (level=="difficult") {
 
-            changeBackground()
+        changeBackground()
             
-            let secs = 0
-            let milli = 0
-            let mins = 0
+        let secs = 0
+        let milli = 0
+        let mins = 0
     
-            setTimer=true
+        setTimer=true
                             
-            let timer = setInterval(function () {
+        let timer = setInterval(function () {
                 
-                if (milli == 99) {
-                        secs += 1;
-                        milli=0}
-                    
-                if (secs == 60) {
-                        mins +=1
-                        secs= 0}
+            if (milli == 99) {
+                    secs += 1;
+                    milli=0}
+                
+            if (secs == 60) {
+                    mins +=1
+                    secs= 0}
              
-                timerEl.innerHTML = mins + ' : ' + secs + ' : ' + milli
-                milli += 1
+            timerEl.innerHTML = mins + ' : ' + secs + ' : ' + milli
+            milli += 1
     
-                if (setTimer===false) {
+            if (setTimer===false) {
     
-                    clearInterval(timer)
+                clearInterval(timer)
     
-                }}, 10)
+            }}, 10)
     
-            //Emitting and getting coordinates function, starting game
+        //Emitting and getting coordinates function, starting game
     
-            started = true
+        started = true
 
-            indexInterval = 500
+        indexInterval = 500
     
-            showVirusHarder()}
+        showVirusHarder()}
     
     else {
         
         showVirus(x, y)
 
-    let secs = 0
-    let milli = 0
-    let mins = 0
+        let secs = 0
+        let milli = 0
+        let mins = 0
 
-    let timer = setInterval(function () {
+        let timer = setInterval(function () {
 
-        if (milli == 99) {
-            secs += 1;
-            milli=0}
+            if (milli == 99) {
+                secs += 1;
+                milli=0}
 
-        if (secs == 60) {
-            mins +=1
-            secs= 0}
+            if (secs == 60) {
+                mins +=1
+                secs= 0}
 
-        timerEl.innerHTML = mins + ' : ' + secs + ' : ' + milli
-            
-        milli += 1
+            timerEl.innerHTML = mins + ' : ' + secs + ' : ' + milli
+                
+            milli += 1
 
         }, 10)
 
