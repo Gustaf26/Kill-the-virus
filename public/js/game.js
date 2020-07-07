@@ -387,9 +387,7 @@ socket.on('finnished', (resultOne, resultTwo, userOne, userTwo, levelName, round
     resultEl.style.display ='flex'
     resultEl.innerHTML = `<div id="finalresults">
                             <p>After ${rounds} rounds...</p>
-                            <p>${userOne} : ${resultOne} points</p>
-                            <p>${userTwo} : ${resultTwo} points</p>
-
+                            <p>${userOne} : ${resultOne} points - ${userTwo} : ${resultTwo} points</p>
                         </div>`
     
     const finalResEl = document.querySelector("#finalresults")
